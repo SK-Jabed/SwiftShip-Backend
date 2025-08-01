@@ -8,7 +8,8 @@ export interface IUserAddress {
   houseNo?: string;
 }
 
-export enum UserRole {
+export enum Role {
+  SUPER_ADMIN = "SUPER_ADMIN",
   ADMIN = "ADMIN",
   SENDER = "SENDER",
   RECEIVER = "RECEIVER",
@@ -37,7 +38,7 @@ export interface IUser {
   isActive?: IsActive;
   isVerified?: boolean;
   isDeleted?: boolean;
-  role: UserRole;
+  role: Role;
   auths: IAuthProvider[];
   parcelsSent?: Types.ObjectId[];
   parcelsReceived?: Types.ObjectId[];

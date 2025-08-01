@@ -4,7 +4,7 @@ import {
   IsActive,
   IUser,
   IUserAddress,
-  UserRole,
+  Role,
 } from "./user.interface";
 
 const UserAddressSchema = new Schema<IUserAddress>(
@@ -47,7 +47,7 @@ const userSchema = new Schema<IUser>(
     password: {
       type: String,
       //   required: [true, "Password is required"],
-      minlength: [6, "Password must be at least 6 characters"],
+      minlength: [8, "Password must be at least 6 characters"],
     },
     phone: {
       type: String,
@@ -62,9 +62,9 @@ const userSchema = new Schema<IUser>(
     },
     role: {
       type: String,
-      enum: Object.values(UserRole),
-      required: [true, "Role is required"],
-      default: UserRole.SENDER,
+      enum: Object.values(Role),
+      //   required: [true, "Role is required"],
+      default: Role.SENDER,
     },
     isVerified: { type: Boolean, default: false },
     isDeleted: { type: Boolean, default: false },
