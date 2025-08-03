@@ -4,250 +4,332 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
 import { ParcelServices } from "./parcel.service";
-// import { ReturnParcelPayload } from "./parcel.interface";
+import { validateRequest } from "../../utils/validateRequest";
+import { parcelZodSchema } from "./parcel.validation";
+import AppError from "../../errorHelpers/AppError";
+import { ParcelStatus } from "./parcel.interface";
 
-const createParcel = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    const parcel = await ParcelServices.createParcel(req.body);
+const createParcel = catchAsync(async (req: Request, res: Response) => {
+  validateRequest(parcelZodSchema)(req, res, async () => {
+    const payload = req.body;
+    const senderId = req.user?.userId;
+
+    if (!senderId) {
+      throw new Error("Sender ID not found in request");
+    }
+
+    const parcel = await ParcelServices.createParcel(payload, senderId);
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
       message: "Parcel created successfully",
       data: parcel,
     });
+  });
+});
+
+const getAllParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const query = req.query;
+
+    const allParcel = await ParcelServices.getAllParcel(
+      query as Record<string, string>
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcels retrieved successfully",
+      data: allParcel,
+    });
   }
 );
 
-// const getAllParcel = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const query = req.query;
+const getSingleParcelStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const trackingId = req.query.trackingId;
 
-//     const allParcel = await ParcelServices.getAllParcel(
-//       query as Record<string, string>
-//     );
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel created successfully",
-//       data: allParcel,
-//     });
-//   }
-// );
-// const getSingleParcelStatus = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const trackingId = req.query.trackingId;
+    const singleParcelTrackingEvent =
+      await ParcelServices.getSingleParcelStatus(trackingId as string);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcel retrieved successfully",
+      data: singleParcelTrackingEvent,
+    });
+  }
+);
 
-//     const singleParcelTrackingEvent =
-//       await ParcelServices.getSingleParcelStatus(trackingId as string);
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel retrieved successfully",
-//       data: singleParcelTrackingEvent,
-//     });
-//   }
-// );
-// const updateParcel = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const parcelId = req.params.parcelId;
-//     const updateData = req.body;
-//     // console.log(parcelId)
+const updateParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const parcelId = req.params.parcelId;
+    const updateData = req.body;
+    // console.log(parcelId)
 
-//     const updatedParcel = await ParcelServices.updateParcel(
-//       parcelId as string,
-//       updateData
-//     );
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel updated successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// const assignParcelToDeliveryPerson = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     // const parcelId = req.params.parcelId
-//     const { parcelId, deliveryPersonId, updaterId } = req.body;
-//     // console.log(req.user)
+    const updatedParcel = await ParcelServices.updateParcel(
+      parcelId as string,
+      updateData
+    );
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcel updated successfully",
+      data: updatedParcel,
+    });
+  }
+);
 
-//     const updatedParcel = await ParcelServices.assignParcelToDeliveryPerson(
+const cancelParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { parcelId } = req.params;
+    const { cancellationReason } = req.body;
+    const userId = req.user?.userId;
+
+    if (!userId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "User not authenticated");
+    }
+
+    const cancelledParcel = await ParcelServices.cancelParcel(
+      parcelId,
+      userId,
+      cancellationReason
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcel cancelled successfully",
+      data: cancelledParcel,
+    });
+  }
+);
+
+const getMyParcels = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const userId = req.user?.userId;
+    const { status, startDate, endDate } = req.query;
+
+    if (!userId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const parcels = await ParcelServices.getSenderParcels(userId, {
+      status: status as ParcelStatus | undefined,
+      startDate: startDate ? new Date(startDate as string) : undefined,
+      endDate: endDate ? new Date(endDate as string) : undefined,
+    });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcels retrieved successfully",
+      data: parcels,
+    });
+  }
+);
+
+const getAllParcelById = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const id = req.params.id;
+    const user = req.user;
+
+    // console.log(id, user);
+    const updatedParcel = await ParcelServices.getAllParcelById(id, user);
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.CREATED,
+      message: "Parcel retrieved  successfully",
+      data: updatedParcel,
+    });
+  }
+);
+
+const getIncomingParcels = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const receiverId = req.user?.userId;
+    const { status, fromDate, toDate } = req.query;
+
+    if (!receiverId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const parcels = await ParcelServices.getReceiverParcels(receiverId, {
+      status: status as ParcelStatus | undefined,
+      fromDate: fromDate ? new Date(fromDate as string) : undefined,
+      toDate: toDate ? new Date(toDate as string) : undefined,
+    });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Incoming parcels retrieved successfully",
+      data: parcels,
+    });
+  }
+);
+
+const confirmParcelDelivery = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { parcelId } = req.params;
+    const receiverId = req.user?.userId;
+
+    // Double authentication check
+    if (!receiverId) {
+      throw new AppError(
+        httpStatus.UNAUTHORIZED,
+        "You must be logged in to confirm delivery"
+      );
+    }
+
+    const { deliveryProof } = req.body;
+
+    const confirmedParcel = await ParcelServices.confirmDelivery(
+      parcelId,
+      receiverId,
+      deliveryProof
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Delivery confirmed successfully",
+      data: confirmedParcel,
+    });
+  }
+);
+
+const getDeliveryHistory = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const receiverId = req.user?.userId;
+    const { year, month, status } = req.query;
+
+    if (!receiverId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const history = await ParcelServices.getDeliveryHistory(receiverId, {
+      year: year ? Number(year) : undefined,
+      month: month ? Number(month) : undefined,
+      status: status as ParcelStatus | undefined,
+    });
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Delivery history retrieved successfully",
+      data: history,
+    });
+  }
+);
+
+const blockParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { parcelId } = req.params;
+    const adminId = req.user?.userId;
+    const { blockReason } = req.body;
+
+    if (!adminId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const result = await ParcelServices.blockParcel(
+      parcelId,
+      adminId,
+      blockReason
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcel blocked successfully",
+      data: result,
+    });
+  }
+);
+
+const unblockParcel = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { parcelId } = req.params;
+    const adminId = req.user?.userId;
+
+    if (!adminId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const result = await ParcelServices.unblockParcel(parcelId, adminId);
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcel unblocked successfully",
+      data: result,
+    });
+  }
+);
+
+const updateStatus = catchAsync(
+  async (req: Request, res: Response, next: NextFunction) => {
+    const { parcelId } = req.params;
+    const adminId = req.user?.userId;
+    const { status, note } = req.body;
+
+    if (!adminId) {
+      throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+    }
+
+    const result = await ParcelServices.updateDeliveryStatus(
+      parcelId,
+      adminId,
+      status,
+      note
+    );
+
+    sendResponse(res, {
+      success: true,
+      statusCode: httpStatus.OK,
+      message: "Parcel status updated successfully",
+      data: result,
+    });
+  }
+);
+
+// const assignPersonnel = catchAsync(
+//   async (req: Request, res: Response, next: NextFunction) => {
+//     const { parcelId } = req.params;
+//     const adminId = req.user?.userId;
+//     const { personnelId } = req.body;
+
+//     if (!adminId) {
+//       throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
+//     }
+
+//     const result = await ParcelServices.assignDeliveryPersonnel(
 //       parcelId,
-//       deliveryPersonId,
-//       updaterId
+//       adminId,
+//       personnelId
 //     );
+
 //     sendResponse(res, {
 //       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel assigned successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// const getAllParcelById = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const id = req.params.id;
-//     const user = req.user;
-
-//     console.log(id, user);
-//     const updatedParcel = await ParcelServices.getAllParcelById(id, user);
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel retrieved  successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-
-// const updateParcelStatus = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const id = req.params.id;
-//     const payload = req.body;
-//     // console.log(req.user)
-
-//     const updatedParcel = await ParcelServices.updateParcelStatus(id, payload);
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel status updated successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// const getIncomingParcels = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const receiversPhoneNumber = req.query.phone;
-//     // const payload = req.body
-//     // console.log(req.user)
-
-//     const updatedParcel = await ParcelServices.getIncomingParcels(
-//       receiversPhoneNumber as string
-//     );
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel status updated successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// const confirmDelivery = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const { phone, trackingId } = req.query;
-//     // const payload = req.body
-
-//     const updatedParcel = await ParcelServices.confirmDelivery(
-//       trackingId as string,
-//       phone as string
-//     );
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel status updated successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// // const collectCODPayment = catchAsync(
-// //   async (req: Request, res: Response, next: NextFunction) => {
-// //     const { deliveryPersonId, trackingId } = req.query;
-// //     // const payload = req.body
-
-// //     const updatedParcel = await ParcelServices.collectCODPayment(
-// //       trackingId as string,
-// //       deliveryPersonId as string
-// //     );
-// //     sendResponse(res, {
-// //       success: true,
-// //       statusCode: httpStatus.CREATED,
-// //       message: "Parcel status updated successfully",
-// //       data: updatedParcel,
-// //     });
-// //   }
-// // );
-// const blockParcel = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const parcelId = req.params.id;
-//     const adminId = req.body.adminId;
-//     // console.log(parcelId, adminId)
-
-//     const updatedParcel = await ParcelServices.blockParcel(
-//       parcelId as string,
-//       adminId as string
-//     );
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel Blocked successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// const unblockParcel = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const parcelId = req.params.id;
-//     const adminId = req.body.adminId;
-//     // console.log(parcelId, adminId)
-
-//     const updatedParcel = await ParcelServices.unblockParcel(
-//       parcelId as string,
-//       adminId as string
-//     );
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel UnBlocked successfully",
-//       data: updatedParcel,
-//     });
-//   }
-// );
-// // const returnParcel = catchAsync(
-// //   async (req: Request, res: Response, next: NextFunction) => {
-// //     const parcelId = req.params.id;
-// //     const returnData: ReturnParcelPayload = req.body;
-// //     console.log(parcelId, returnData);
-
-// //     const updatedParcel = await ParcelServices.returnParcel(
-// //       parcelId as string,
-// //       returnData
-// //     );
-// //     sendResponse(res, {
-// //       success: true,
-// //       statusCode: httpStatus.CREATED,
-// //       message: "Parcel returned successfully",
-// //       data: updatedParcel,
-// //     });
-// //   }
-// // );
-// const trackParcelByTrackingIdPublic = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     const trackingId = req.query.trackingId;
-
-//     const trackParcelStatus =
-//       await ParcelServices.trackParcelByTrackingIdPublic(trackingId as string);
-//     sendResponse(res, {
-//       success: true,
-//       statusCode: httpStatus.CREATED,
-//       message: "Parcel Status Retieved successfully",
-//       data: trackParcelStatus,
+//       statusCode: httpStatus.OK,
+//       message: "Delivery personnel assigned successfully",
+//       data: result,
 //     });
 //   }
 // );
 
 export const ParcelController = {
   createParcel,
-//   getAllParcel,
-//   getSingleParcelStatus,
-//   updateParcel,
-//   assignParcelToDeliveryPerson,
-//   getAllParcelById,
-//   updateParcelStatus,
-//   getIncomingParcels,
-//   confirmDelivery,
-//   collectCODPayment,
-//   blockParcel,
-//   unblockParcel,
-//   returnParcel,
-//   trackParcelByTrackingIdPublic,
+  getAllParcel,
+  getSingleParcelStatus,
+  updateParcel,
+  cancelParcel,
+  getMyParcels,
+  confirmParcelDelivery,
+  getDeliveryHistory,
+  blockParcel,
+  unblockParcel,
+  getAllParcelById,
+  getIncomingParcels,
+  updateStatus,
 };

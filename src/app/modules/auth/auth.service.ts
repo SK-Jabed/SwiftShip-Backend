@@ -5,10 +5,11 @@ import { IUser } from "../user/user.interface";
 import httpStatus from "http-status-codes";
 import { User } from "../user/user.model";
 import bcryptjs from "bcryptjs";
-// import jwt from "jsonwebtoken"
 import { envVars } from "../../config/env";
-import { generateToken } from "../../utils/jwt";
-import { createNewAccessTokenAndRefreshToken, createUserTokens } from "../../utils/userTokens";
+import {
+  createNewAccessTokenAndRefreshToken,
+  createUserTokens,
+} from "../../utils/userTokens";
 import { JwtPayload } from "jsonwebtoken";
 
 const credentialsLogin = async (payload: Partial<IUser>) => {
@@ -34,8 +35,6 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
     );
   }
 
-
-
   const userToken = createUserTokens(isUserExist);
   const { password: pass, ...rest } = isUserExist.toObject();
 
@@ -43,7 +42,7 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
     accessToken: userToken.accessToken,
     refreshToken: userToken.refreshToken,
     user: rest,
-    email: isUserExist.email
+    email: isUserExist.email,
   };
 };
 
@@ -83,5 +82,5 @@ const resetPassword = async (
 export const AuthServices = {
   credentialsLogin,
   getNewAccessToken,
-    resetPassword,
+  resetPassword,
 };

@@ -13,7 +13,7 @@ export const setAuthCookie = (res: Response, tokenInfo: AuthToken) => {
       sameSite: "none",
     });
   }
-  
+
   if (tokenInfo.refreshToken) {
     res.cookie("refreshToken", tokenInfo.refreshToken, {
       httpOnly: true,

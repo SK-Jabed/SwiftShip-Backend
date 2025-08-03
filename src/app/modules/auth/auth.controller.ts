@@ -10,7 +10,6 @@ import { setAuthCookie } from "../../utils/setCookie";
 import { JwtPayload } from "jsonwebtoken";
 import { createUserTokens } from "../../utils/userTokens";
 import { envVars } from "../../config/env";
-// import passport from "passport";
 
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -26,61 +25,6 @@ const credentialsLogin = catchAsync(
     });
   }
 );
-
-// const credentialsLogin = catchAsync(
-//   async (req: Request, res: Response, next: NextFunction) => {
-//     // const loginInfo = await AuthServices.credentialsLogin(req.body)
-
-//     passport.authenticate("local", async (err: any, user: any, info: any) => {
-//       if (err) {
-//         // ❌❌❌❌❌
-//         // throw new AppError(401, "Some error")
-//         // next(err)
-//         // return new AppError(401, err)
-
-//         // ✅✅✅✅
-//         // return next(err)
-//         // console.log("from err");
-//         return next(new AppError(401, err));
-//       }
-
-//       if (!user) {
-//         // console.log("from !user");
-//         // return new AppError(401, info.message)
-//         return next(new AppError(401, info.message));
-//       }
-
-//       const userTokens = await createUserTokens(user);
-
-//       // delete user.toObject().password
-
-//       const { password: pass, ...rest } = user.toObject();
-
-//       setAuthCookie(res, userTokens);
-
-//       sendResponse(res, {
-//         success: true,
-//         statusCode: httpStatus.OK,
-//         message: "User Logged In Successfully",
-//         data: {
-//           accessToken: userTokens.accessToken,
-//           refreshToken: userTokens.refreshToken,
-//           user: rest,
-//         },
-//       });
-//     })(req, res, next);
-
-//     // res.cookie("accessToken", loginInfo.accessToken, {
-//     //     httpOnly: true,
-//     //     secure: false
-//     // })
-
-//     // res.cookie("refreshToken", loginInfo.refreshToken, {
-//     //     httpOnly: true,
-//     //     secure: false,
-//     // })
-//   }
-// );
 
 const getNewAccessToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
