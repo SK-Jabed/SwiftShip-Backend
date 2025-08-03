@@ -9,7 +9,7 @@ export enum CancelReason {
   BUSINESS_POLICY = "BUSINESS_POLICY",
 }
 
-export interface ReturnParcelPayload {
+export interface IReturnParcelPayload {
   returnReason: string;
   returnType: CancelReason;
   requestedBy: string;
@@ -47,7 +47,7 @@ export enum ParcelType {
   OTHER = "OTHER",
 }
 
-export interface ParcelAddress {
+export interface IParcelAddress {
   name: string;
   phone: string;
   division: string;
@@ -56,7 +56,7 @@ export interface ParcelAddress {
   detailAddress: string;
 }
 
-export interface ParcelFee {
+export interface IParcelFee {
   baseRate: number;
   weightCharge: number;
   distanceCharge: number;
@@ -78,15 +78,15 @@ export enum PaymentStatus {
 
 export interface IParcel {
   _id?: Types.ObjectId;
-  trackingId: string;
+  trackingId?: string;
   senderId: Types.ObjectId | IUser;
   receiverId?: Types.ObjectId | IUser;
   parcelType: ParcelType;
   weight: number;
-  parcelFee: ParcelFee;
+  parcelFee: IParcelFee;
   description?: string;
-  senderInfo: ParcelAddress;
-  receiverInfo: ParcelAddress;
+  senderInfo: IParcelAddress;
+  receiverInfo: IParcelAddress;
   actualPickupDate?: Date;
   actualDeliveryDate?: Date;
   status: ParcelStatus;

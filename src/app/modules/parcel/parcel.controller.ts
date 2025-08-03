@@ -4,7 +4,7 @@ import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
 import httpStatus from "http-status-codes";
 import { ParcelServices } from "./parcel.service";
-import { ReturnParcelPayload } from "./parcel.interface";
+// import { ReturnParcelPayload } from "./parcel.interface";
 
 const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
