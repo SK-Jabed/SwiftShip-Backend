@@ -146,6 +146,7 @@ const resetPassword = catchAsync(
     });
   }
 );
+
 const googleCallbackController = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     let redirectTo = (req.query?.state as string) || "";
