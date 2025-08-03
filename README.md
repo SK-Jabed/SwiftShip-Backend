@@ -1,234 +1,281 @@
 
-# 📦 Happy Parcel Picker – Parcel Delivery API
+# 🚀 SwiftShip – Parcel Delivery Backend API
 
-[Live App](https://happy-parcel-picker.vercel.app) | [GitHub Repo](https://github.com/pxgacademy/Parcel-Delivery-Web-App-Server)
+[🌐 Live App](https://happy-parcel-picker.vercel.app) | [🛠 Server Repo](https://github.com/SK-Jabed/SwiftShip-Backend)
 
-A secure, modular, and role-based backend API for a parcel delivery platform inspired by services like Pathao Courier and Sundarban. Built with **Express.js**, **MongoDB (Mongoose)**, **Zod**, **JWT**, and **TypeScript**.
+A secure, scalable, and role-based backend system built with **Express.js**, **MongoDB**, **Mongoose**, **Zod**, **JWT**, and **TypeScript**, enabling smooth parcel delivery operations inspired by platforms like Pathao Courier or Sundarban.
+
+---
+
+## 📖 Table of Contents
+
+- [🎯 Project Overview](#-project-overview)
+- [✨ Features](#-features)
+- [📁 Project Structure](#-project-structure)
+- [🔐 Roles & Permissions](#-roles--permissions)
+- [⚙️ Setup & Installation](#️-setup--installation)
+- [🔗 API Endpoints](#-api-endpoints)
+- [📦 Parcel Status Flow](#-parcel-status-flow)
+- [🧾 Sample Payloads](#-sample-payloads)
+- [🔒 Security](#-security)
+- [📥 Postman Collection](#-postman-collection)
+- [📄 License](#-license)
+
+---
+
+## 🎯 Project Overview
+
+SwiftShip is a backend API service for managing parcel delivery operations. It handles:
+
+- User registration & authentication
+- Parcel creation, tracking, and status updates
+- Role-based access (Admin, Sender, Receiver)
+- Modular, maintainable code architecture
+- Embedded delivery logs per parcel
+- Google OAuth and credentials login
 
 ---
 
 ## ✨ Features
 
-- 🔐 JWT Authentication & Role-based Access (Admin, Sender, Receiver)
-- 🧑 Sender & Receiver parcel management
-- 🧾 Embedded status tracking with full delivery logs
-- ❌ Cancel parcels (before dispatch)
-- ✅ Confirm delivery by receivers
-- 🚫 Block users or parcels (Admin only)
-- 🧱 Modular Code Architecture
-- 📄 Auto-generated Tracking ID for each parcel
-- 📥 Downloadable parcel invoice (via PDFKit)
+- ✅ JWT Auth + Google OAuth
+- 👥 Role-based Access: Admin, Sender, Receiver
+- 📦 Parcel lifecycle tracking & logs
+- 📊 Delivery history & cancel/reschedule options
+- ❌ Cancel parcels (pre-dispatch only)
+- 🚫 Block/Unblock users or parcels (admin)
+- 🧱 Clean and modular folder architecture
+- 🛡️ Zod validations across all endpoints
 
 ---
 
-## 📁 Folder Structure
+## 📁 Project Structure
 
 ```bash
 src/
 ├── app/
 │   ├── modules/
-│   │   ├── auth/
-│   │   ├── user/
-│   │   ├── parcel/
-│   ├── middlewares/
-│   ├── constants/
-│   ├── utils/       # Shared logic (PDF, logger, validators, etc.)
-│   ├── lib/         # DB connection, token, service configs           
-├── config/            # Global config (env, server setup)
-├── app.ts
-└── server.ts
-```
+│   │   ├── auth/          # Login, token, Google OAuth
+│   │   ├── user/          # Registration, user mgmt, blocking
+│   │   └── parcel/        # Parcel logic, status, delivery
+│   ├── middlewares/       # Error handlers, auth checks
+│   ├── config/            # ENV, session, passport setup
+│   ├── utils/             # Validation helpers, PDF generator
+├── app.ts                 # Express App Init
+└── server.ts              # Server Startup
+````
 
 ---
 
-## 🔐 Authentication & Roles
+## 🔐 Roles & Permissions
 
-| Role       | Description                                        |
-| ---------- | -------------------------------------------------- |
-| `ADMIN`    | Full access to users, parcels, logs, block/unblock |
-| `SENDER`   | Can create/cancel/view parcels they send           |
-| `RECEIVER` | View/confirm parcels addressed to them             |
+| Role         | Capabilities                                                |
+| ------------ | ----------------------------------------------------------- |
+| **Admin**    | View/update all parcels, block/unblock users, manage status |
+| **Sender**   | Create, cancel, and view their parcels                      |
+| **Receiver** | View incoming parcels, confirm deliveries                   |
 
 ---
 
-## 🧪 Local Setup
+## ⚙️ Setup & Installation
+
+### 🔧 Prerequisites
+
+* Node.js v18+
+* MongoDB URI
+* Vercel (for frontend hosting, optional)
+
+### 🚀 Installation Steps
 
 ```bash
-# 1. Clone repository
-git clone https://github.com/pxgacademy/Parcel-Delivery-Web-App-Server
+# 1. Clone the repository
+git clone https://github.com/SK-Jabed/SwiftShip-Backend.git
 
-# 2. Install dependencies
+# 2. Navigate to project folder
+cd Parcel-Delivery-Server
+
+# 3. Install dependencies
 npm install
 
-# 3. Set up .env file
-cp .env.example .env  # Fill in values like DB_URI, JWT_SECRET, etc.
+# 4. Setup environment variables
+cp .env.example .env
+# Fill in required fields in .env (DB_URI, JWT, Google OAuth keys, etc.)
 
-# 4. Run dev server
-npm dev
+# 5. Start development server
+npm run dev
+```
+
+### 📁 Example `.env` Values
+
+```env
+PORT=5000
+DB_URI=mongodb+srv://username:password@cluster.mongodb.net/swiftShipDB
+JWT_ACCESS_SECRET=yourAccessSecret
+JWT_REFRESH_SECRET=yourRefreshSecret
+SUPER_ADMIN_EMAIL=superadmin@example.com
+SUPER_ADMIN_PASSWORD=StrongPass123
+GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
+GOOGLE_CLIENT_SECRET=xxxx
+FRONTEND_URL=http://localhost:5173
 ```
 
 ---
 
-## 🔁 Parcel Status Flow
+## 🔗 API Endpoints
 
-Each parcel has a status log array stored as a subdocument inside the parcel. Example status flow:
+All endpoints are prefixed with `/api/v1`.
+
+### 🧑 Auth Routes
+
+| Method | Endpoint                | Description              |
+| ------ | ----------------------- | ------------------------ |
+| POST   | `/auth/login`           | Login via credentials    |
+| POST   | `/auth/logout`          | Logout current session   |
+| POST   | `/auth/refresh-token`   | Refresh JWT access token |
+| POST   | `/auth/reset-password`  | Reset password           |
+| GET    | `/auth/google`          | Initiate Google OAuth    |
+| GET    | `/auth/google/callback` | OAuth callback handler   |
+
+---
+
+### 👤 User Routes
+
+| Role   | Method | Endpoint            | Description       |
+| ------ | ------ | ------------------- | ----------------- |
+| Public | POST   | `/user/register`    | Register new user |
+| Admin  | GET    | `/user/all-users`   | List all users    |
+| All    | PATCH  | `/user/:id`         | Update profile    |
+| Admin  | PATCH  | `/user/block/:id`   | Block a user      |
+| Admin  | PATCH  | `/user/unblock/:id` | Unblock a user    |
+
+---
+
+### 📦 Parcel Routes
+
+#### 🔸 Sender
+
+| Method | Endpoint                | Description                   |
+| ------ | ----------------------- | ----------------------------- |
+| POST   | `/parcel/create-parcel` | Create a new parcel           |
+| PATCH  | `/parcel/update/:id`    | Update parcel info            |
+| PATCH  | `/parcel/cancel/:id`    | Cancel parcel before dispatch |
+| GET    | `/parcel/my-parcels`    | Get your parcels              |
+
+#### 🔹 Receiver
+
+| Method | Endpoint                       | Description           |
+| ------ | ------------------------------ | --------------------- |
+| GET    | `/parcel/incoming-parcels`     | View incoming parcels |
+| PATCH  | `/parcel/confirm-delivery/:id` | Confirm receipt       |
+| GET    | `/parcel/delivery-history`     | View delivery history |
+
+#### 🔧 Admin
+
+| Method | Endpoint                     | Description             |
+| ------ | ---------------------------- | ----------------------- |
+| GET    | `/parcel/all-parcel`         | View all parcels        |
+| PATCH  | `/parcel/status/:id`         | Update status           |
+| PATCH  | `/parcel/block/:id`          | Block a parcel          |
+| PATCH  | `/parcel/unblock/:id`        | Unblock a parcel        |
+| GET    | `/parcel/all-parcel/:userId` | View parcels for a user |
+
+---
+
+## 📦 Parcel Status Flow
+
+Each parcel includes a `statusLogs[]` subdocument tracking its progress:
 
 ```
-Requested → Approved → Dispatched → In Transit → Delivered
+REQUESTED → APPROVED → PICKED_UP → IN_TRANSIT → DELIVERED
 ```
 
-Each status includes:
+Each status entry contains:
 
-* `status`: Enum value
-* `timestamp`: Auto-generated
-* `note`: Optional remarks
+* `status`: Current state of the parcel
+* `timestamp`: Auto-generated ISO timestamp
 * `updatedBy`: Admin/User ID
+* `note`: Optional remarks
 
 ---
 
-## 🔗 API Reference
+## 🧾 Sample Payloads
 
-All endpoints are versioned under `/api/v1`.
-
-### 🔐 Auth
-
-| Method | Endpoint                | Description                     |
-| ------ | ----------------------- | ------------------------------- |
-| POST   | `/auth/login`           | Login and get access token      |
-| POST   | `/auth/logout`          | Logout user                     |
-| POST   | `/auth/refresh-token`   | Refresh access token            |
-| POST   | `/auth/forgot-password` | Email-based password recovery   |
-| POST   | `/auth/reset-password`  | Reset password with new one     |
-| POST   | `/auth/change-password` | Change password (auth required) |
-
----
-
-### 👤 User
-
-| Method | Endpoint          | Description                  |
-| ------ | ----------------- | ---------------------------- |
-| POST   | `/user/register`  | Create user account          |
-| GET    | `/user/all-users` | \[Admin] Get all users       |
-| GET    | `/user/me`        | \[User] Get own profile      |
-| GET    | `/user/:id`       | \[Admin] Get a specific user |
-| PATCH  | `/user/:id`       | \[User/Admin] Update profile |
-
----
-
-### 📦 Parcel
-
-#### Sender
-
-| Method | Endpoint                    | Description               |
-| ------ | --------------------------- | ------------------------- |
-| POST   | `/parcel/create`            | Create a parcel           |
-| PATCH  | `/parcel/update-parcel/:id` | Update parcel details     |
-| PATCH  | `/parcel/cancel/:id`        | Cancel parcel             |
-| GET    | `/parcel/my-parcels`        | List parcels sent by user |
-
-#### Receiver
-
-| Method | Endpoint                   | Description                   |
-| ------ | -------------------------- | ----------------------------- |
-| GET    | `/parcel/incoming-parcels` | Get parcels addressed to user |
-| PATCH  | `/parcel/confirm/:id`      | Confirm received parcel       |
-
-#### Admin
-
-| Method | Endpoint                               | Description                            |
-| ------ | -------------------------------------- | -------------------------------------- |
-| GET    | `/parcel/all-parcels`                  | View all parcels                       |
-| PATCH  | `/parcel/update-parcel-status/:id`     | Change status (e.g. Dispatch, Approve) |
-| PATCH  | `/parcel/update-parcel-status-log/:id` | Update note for a specific status log  |
-| DELETE | `/parcel/status/:id`                   | Delete a status log entry              |
-| DELETE | `/parcel/:id`                          | Hard delete parcel                     |
-
----
-
-## 🧾 Parcel Payload Example
+### 📬 Create Parcel
 
 ```json
 {
-  "title": "A big box of mango",
-  "type": "Box",
-  "weight": 60,
-  "pickupAddress": {
-    "street": "Gohira",
-    "stateOrProvince": "Hathazari",
-    "city": "Chattogram",
-    "postalCode": "4330",
-    "country": "Bangladesh"
+  "senderId": "123456789",
+  "parcelType": "PACKAGE",
+  "weight": 5,
+  "description": "Fragile electronics",
+  "senderInfo": {
+    "name": "Alice",
+    "phone": "017xxxxxxxx",
+    "division": "Dhaka",
+    "city": "Mirpur",
+    "area": "Section 2",
+    "detailAddress": "House 4, Road 2"
   },
-  "deliveryAddress": {
-    "street": "Kazi para",
-    "stateOrProvince": "Hathazari",
-    "city": "Chattogram",
-    "postalCode": "4330",
-    "country": "Bangladesh"
+  "receiverInfo": {
+    "name": "Bob",
+    "phone": "018xxxxxxxx",
+    "division": "Chattogram",
+    "city": "Agrabad",
+    "area": "Block A",
+    "detailAddress": "Apartment 7B"
   },
-  "receiver": "688dd4e0d0d52012503e5d2a"
+  "paymentMethod": "COD"
 }
 ```
+
+### 🛠 Update Parcel Status (Admin)
+
+```json
+{
+  "status": "IN_TRANSIT",
+  "note": "Left sorting hub",
+  "location": "Chattogram"
+}
+```
+
+---
+
+## 🔒 Security
+
+* **Passwords** hashed with `bcryptjs`
+* **JWT tokens** with expiry control via `.env`
+* **Role-based middleware** guards endpoints
+* **Google OAuth** with fallback to credential login
+* **Session Management** with `express-session`
 
 ---
 
 ## 🧭 Postman Collection
 
-📁 [Download & Open in Postman](https://drive.google.com/file/d/1k1t00cUWVbcmDnG8e-933NKzAD4bV2xm/view?usp=sharing)
+🧪 [Postman Collection (Download)]()
 
-> Import the collection and follow request examples using pre-filled test tokens. Adjust `Authorization` headers as needed.
-
----
-
-## 📥 Sample Status Log Payloads
-
-### ✅ Update a status log:
-
-```json
-{
-  "note": "Status corrected manually",
-  "status": "Approved",
-  "updatedAt": "2025-08-02T16:20:59.356Z"
-}
-```
-
-### ❌ Delete a status log:
-
-```json
-{
-  "deletedStatus": "Delivered",
-  "updatedAt": "2025-08-02T10:34:52.609Z",
-  "presentStatus": "Approved",
-  "note": "Reverted incorrect delivery"
-}
-```
+> Use test tokens or login credentials. Adjust `Authorization: Bearer <token>` headers per user role.
 
 ---
 
-## 💬 Security Notes
+## 📄 License
 
-* Passwords hashed using `bcryptjs`
-* JWT access tokens expire based on `.env` config
-* Refresh token support via `/auth/refresh-token`
-* Role-based access middleware enforces endpoint restrictions
+Licensed under the [ISC License](LICENSE).
+© 2025 Sheikh Jabed. All rights reserved.
 
 ---
 
-## 🧾 Invoice PDF
+## 🙌 Acknowledgements
 
-PDF invoice generated with [PDFKit](https://pdfkit.org). Admins can download shipment invoice containing parcel metadata and status logs.
-
----
-
-## Acknowledgements
-
-Built using:
+Built with ❤️ using:
 
 * [Express.js](https://expressjs.com/)
 * [MongoDB + Mongoose](https://mongoosejs.com/)
 * [Zod](https://zod.dev/)
 * [JWT](https://jwt.io/)
 * [PDFKit](https://pdfkit.org/)
+* [TypeScript](https://www.typescriptlang.org/)
 * [Passport.js](http://www.passportjs.org/)
+
 
 ---
