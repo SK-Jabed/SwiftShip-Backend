@@ -80,7 +80,7 @@ export interface IParcel {
   _id?: Types.ObjectId;
   trackingId: string;
   senderId: Types.ObjectId | IUser;
-  receiverId: Types.ObjectId | IUser;
+  receiverId?: Types.ObjectId | IUser;
   parcelType: ParcelType;
   weight: number;
   parcelFee: ParcelFee;

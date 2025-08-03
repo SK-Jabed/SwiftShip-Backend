@@ -11,41 +11,41 @@ import { generateToken } from "../../utils/jwt";
 import { createNewAccessTokenAndRefreshToken, createUserTokens } from "../../utils/userTokens";
 import { JwtPayload } from "jsonwebtoken";
 
-// const credentialsLogin = async (payload: Partial<IUser>) => {
-//   const { email, password } = payload;
+const credentialsLogin = async (payload: Partial<IUser>) => {
+  const { email, password } = payload;
 
-//   const isUserExist = await User.findOne({ email });
-//   if (!isUserExist) {
-//     throw new AppError(
-//       httpStatus.BAD_REQUEST,
-//       "User not found , please register first"
-//     );
-//   }
+  const isUserExist = await User.findOne({ email });
+  if (!isUserExist) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "User not found , please register first"
+    );
+  }
 
-//   const isPasswordMatched = await bcryptjs.compare(
-//     password as string,
-//     isUserExist.password as string
-//   );
+  const isPasswordMatched = await bcryptjs.compare(
+    password as string,
+    isUserExist.password as string
+  );
 
-//   if (!isPasswordMatched) {
-//     throw new AppError(
-//       httpStatus.BAD_REQUEST,
-//       "Password not matched, please check your password"
-//     );
-//   }
+  if (!isPasswordMatched) {
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Password not matched, please check your password"
+    );
+  }
 
 
 
-//   const userToken = createUserTokens(isUserExist);
-//   const { password: pass, ...rest } = isUserExist.toObject();
+  const userToken = createUserTokens(isUserExist);
+  const { password: pass, ...rest } = isUserExist.toObject();
 
-//   return {
-//     accessToken: userToken.accessToken,
-//     refreshToken: userToken.refreshToken,
-//     user: rest,
-//     email: isUserExist.email
-//   };
-// };
+  return {
+    accessToken: userToken.accessToken,
+    refreshToken: userToken.refreshToken,
+    user: rest,
+    email: isUserExist.email
+  };
+};
 
 const getNewAccessToken = async (refreshToken: string) => {
   const newAccessToken = await createNewAccessTokenAndRefreshToken(
@@ -81,7 +81,7 @@ const resetPassword = async (
 };
 
 export const AuthServices = {
-//   credentialsLogin,
+  credentialsLogin,
   getNewAccessToken,
     resetPassword,
 };
