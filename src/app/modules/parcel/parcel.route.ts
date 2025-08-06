@@ -11,7 +11,6 @@ import {
   parcelZodSchema,
   updateStatusSchema,
 } from "./parcel.validation";
-// import { blockZodSchema } from "../user/user.validation";
 
 const router = Router();
 
@@ -26,19 +25,6 @@ router.get(
   "/all-parcel",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
   ParcelController.getAllParcel
-);
-
-router.get(
-  "/status",
-  checkAuth(...Object.values(Role)),
-  ParcelController.getSingleParcelStatus
-);
-
-router.patch(
-  "/cancel/:parcelId",
-  validateRequest(cancelParcelSchema),
-  checkAuth(Role.SENDER),
-  ParcelController.cancelParcel
 );
 
 router.get(
@@ -61,9 +47,16 @@ router.get(
 );
 
 router.get(
-  "/incoming-parcels",
-  checkAuth(Role.RECEIVER),
-  ParcelController.getIncomingParcels
+  "/status",
+  checkAuth(...Object.values(Role)),
+  ParcelController.getSingleParcelStatus
+);
+
+router.patch(
+  "/cancel/:parcelId",
+  validateRequest(cancelParcelSchema),
+  checkAuth(Role.SENDER),
+  ParcelController.cancelParcel
 );
 
 router.get(

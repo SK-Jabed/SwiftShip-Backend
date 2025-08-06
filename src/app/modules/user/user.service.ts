@@ -1,15 +1,16 @@
 import { JwtPayload } from "jsonwebtoken";
 import { envVars } from "../../config/env";
 import AppError from "../../errorHelpers/AppError";
-import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 import { User } from "./user.model";
 import bcryptjs from "bcryptjs";
 import httpStatus from "http-status-codes";
+import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 
 const createUser = async (payload: Partial<IUser>) => {
   const { email, password, ...rest } = payload;
 
   const isUserExist = await User.findOne({ email });
+
   if (isUserExist) {
     throw new AppError(httpStatus.BAD_REQUEST, "User Already Exist");
   }
@@ -28,12 +29,14 @@ const createUser = async (payload: Partial<IUser>) => {
     provider: "credentials",
     providerId: email as string,
   };
+
   const user = await User.create({
     email,
     password: hashedPassword,
     auths: [authProvider],
     ...rest,
   });
+
   return user;
 };
 
@@ -43,6 +46,7 @@ const updateUser = async (
   decodedToken: JwtPayload
 ) => {
   const isUserExist = await User.findById(userId);
+
   if (!isUserExist) {
     throw new AppError(httpStatus.NOT_FOUND, "User Not Found");
   }
@@ -89,6 +93,7 @@ const updateUser = async (
 const getAllUsers = async () => {
   const users = await User.find();
   const totalUsers = await User.countDocuments();
+
   return {
     data: users,
     meta: {
@@ -102,8 +107,8 @@ const blockUser = async (userId: string, adminId: string) => {
     throw new AppError(400, "User ID, reason, and admin ID are required");
   }
 
-  // Verify admin permissions
   const admin = await User.findById(adminId);
+
   if (
     !admin ||
     (admin.role !== Role.ADMIN && admin.role !== Role.SUPER_ADMIN)
@@ -111,13 +116,12 @@ const blockUser = async (userId: string, adminId: string) => {
     throw new AppError(403, "Only admins can block users");
   }
 
-  // Get user to block
   const userToBlock = await User.findById(userId);
+
   if (!userToBlock) {
     throw new AppError(404, "User not found");
   }
 
-  // Prevent blocking other admins (unless super admin)
   if (
     (userToBlock.role === Role.ADMIN ||
       userToBlock.role === Role.SUPER_ADMIN) &&
@@ -126,12 +130,10 @@ const blockUser = async (userId: string, adminId: string) => {
     throw new AppError(403, "Cannot block admin users");
   }
 
-  // Prevent self-blocking
   if (userId === adminId) {
     throw new AppError(400, "Cannot block yourself");
   }
 
-  // Check if already blocked
   if (userToBlock.isActive === IsActive.BLOCKED) {
     throw new AppError(400, "User is already blocked");
   }
@@ -140,7 +142,6 @@ const blockUser = async (userId: string, adminId: string) => {
   session.startTransaction();
 
   try {
-    // Block the user
     const blockedUser = await User.findByIdAndUpdate(
       userId,
       {
@@ -172,6 +173,7 @@ const unblockUser = async (userId: string, adminId: string) => {
 
   // Verify admin permissions
   const admin = await User.findById(adminId);
+  
   if (
     !admin ||
     (admin.role !== Role.ADMIN && admin.role !== Role.SUPER_ADMIN)

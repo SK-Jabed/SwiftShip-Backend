@@ -1,7 +1,7 @@
 
 # 🚀 SwiftShip – Parcel Delivery Backend API
 
-[🌐 Live App](https://happy-parcel-picker.vercel.app) | [🛠 Server Repo](https://github.com/SK-Jabed/SwiftShip-Backend)
+[🌐 Live App](https://swift-ship-backend.vercel.app) | [🛠 Server Repo](https://github.com/SK-Jabed/SwiftShip-Backend)
 
 A secure, scalable, and role-based backend system built with **Express.js**, **MongoDB**, **Mongoose**, **Zod**, **JWT**, and **TypeScript**, enabling smooth parcel delivery operations inspired by platforms like Pathao Courier or Sundarban.
 
@@ -49,18 +49,37 @@ SwiftShip is a backend API service for managing parcel delivery operations. It h
 
 ---
 
+##  Tech Stack
+
+| Category       | Technology                    |
+|----------------|-------------------------------|
+| Runtime        | Node.js                       |
+| Framework      | Express.js                    |
+| Language       | TypeScript                    |
+| Database       | MongoDB + Mongoose            |
+| Auth & Security| JWT, bcrypt, cookie-parser    |
+| Validation     | Zod                           |
+| Dev Tools      | dotenv, ts-node-dev, etc.     |
+
+---
+
 ## 📁 Project Structure
 
 ```bash
 src/
 ├── app/
+│   ├── config/
+│   ├── errorHelpers/
+│   ├── helpers/
+│   ├── interfaces/
+│   ├── middlewares/       # Error handlers, auth checks
 │   ├── modules/
 │   │   ├── auth/          # Login, token, Google OAuth
-│   │   ├── user/          # Registration, user mgmt, blocking
+│   │   ├── user/          # Registration, user login, blocking
 │   │   └── parcel/        # Parcel logic, status, delivery
-│   ├── middlewares/       # Error handlers, auth checks
-│   ├── config/            # ENV, session, passport setup
+│   ├── routes/            # ENV, session, passport setup
 │   ├── utils/             # Validation helpers, PDF generator
+├── types                 # Types Declaration
 ├── app.ts                 # Express App Init
 └── server.ts              # Server Startup
 ````
@@ -273,9 +292,7 @@ Built with ❤️ using:
 * [MongoDB + Mongoose](https://mongoosejs.com/)
 * [Zod](https://zod.dev/)
 * [JWT](https://jwt.io/)
-* [PDFKit](https://pdfkit.org/)
 * [TypeScript](https://www.typescriptlang.org/)
 * [Passport.js](http://www.passportjs.org/)
-
 
 ---

@@ -12,13 +12,13 @@ import { envVars } from "./env";
 import { User } from "../modules/user/user.model";
 import { IsActive, Role } from "../modules/user/user.interface";
 
-
 passport.use(
   new LocalStrategy(
     {
       usernameField: "email",
       passwordField: "password",
     },
+
     async (email: string, password: string, done) => {
       try {
         const isUserExist = await User.findOne({ email });
@@ -88,6 +88,7 @@ passport.use(
       clientID: envVars.GOOGLE_CLIENT_ID,
       callbackURL: envVars.GOOGLE_CALLBACK_URL,
     },
+
     async function (
       accessToken: string,
       refreshToken: string,
@@ -96,6 +97,7 @@ passport.use(
     ) {
       try {
         const email = profile.emails?.[0].value;
+
         if (!email) {
           return done(null, false, { message: "Email not found" });
         }

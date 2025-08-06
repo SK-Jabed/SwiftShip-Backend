@@ -9,6 +9,7 @@ export const seedSuperAdmin = async () => {
     const isSuperAdminExist = await User.findOne({
       email: envVars.SUPER_ADMIN_EMAIL,
     });
+    
     if (isSuperAdminExist) {
       console.log("Super Admin Already Exist....");
       return;

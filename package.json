@@ -9,10 +9,22 @@
     "lint": "npx eslint ./src",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
+  "keywords": [
+    "parcel-delivery",
+    "courier-service",
+    "delivery-backend",
+    "api",
+    "rest-api",
+    "logistics",
+    "role-based-auth",
+    "jwt-authentication",
+    "zod-validation",
+    "delivery-management",
+    "backend-system"
+  ],
   "author": "Sheikh Jabed",
   "license": "ISC",
-  "description": "",
+  "description": "A secure, scalable, and role-based backend API for a parcel delivery system built with Express.js, TypeScript, and MongoDB.",
   "devDependencies": {
     "@eslint/js": "^9.32.0",
     "@types/bcryptjs": "^2.4.6",

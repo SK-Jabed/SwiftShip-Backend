@@ -12,27 +12,33 @@ export const checkAuth =
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const accessToken = req.headers.authorization;
+
       if (!accessToken) {
         throw new AppError(403, "Token not found");
       }
+
       const verifiedToken = verifyToken(
         accessToken,
         envVars.JWT_ACCESS_SECRET
       ) as JwtPayload;
 
       const isUserExist = await User.findOne({ email: verifiedToken.email });
+
       if (!isUserExist) {
         throw new AppError(
           httpStatus.BAD_REQUEST,
           "User not found , please register first"
         );
       }
+
       if (isUserExist.isActive === IsActive.BLOCKED) {
         throw new AppError(httpStatus.BAD_REQUEST, "User is blocked");
       }
+
       if (isUserExist.isDeleted) {
         throw new AppError(httpStatus.BAD_REQUEST, "User is deleted");
       }
+
       if (!authRoles.includes(verifiedToken.role)) {
         throw new AppError(
           403,

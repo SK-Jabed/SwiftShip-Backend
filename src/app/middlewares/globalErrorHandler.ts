@@ -25,6 +25,7 @@ export const globalErrorHandler = (
     statusCode = simplifiedError.statusCode;
     message = simplifiedError.message;
   }
+
   // Object ID error / Cast Error
   else if (err.name === "CastError") {
     const simplifiedError = handleCastError(err);
@@ -36,6 +37,7 @@ export const globalErrorHandler = (
     message = simplifiedError.message;
     errorSources = simplifiedError.errorSources as TErrorSources[];
   }
+
   //Mongoose Validation Error
   else if (err.name === "ValidationError") {
     const simplifiedError = handlerValidationError(err);

@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
@@ -29,9 +28,11 @@ const credentialsLogin = catchAsync(
 const getNewAccessToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const refreshToken = req.cookies.refreshToken;
+
     if (!refreshToken) {
       throw new AppError(httpStatus.BAD_REQUEST, "No refresh token found...");
     }
+
     const tokenInfo = await AuthServices.getNewAccessToken(
       refreshToken as string
     );
@@ -54,6 +55,7 @@ const logout = catchAsync(
       secure: false,
       sameSite: "lax",
     });
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: false,
@@ -75,6 +77,7 @@ const resetPassword = catchAsync(
 
     const newPassword = req.body.newPassword;
     const oldPassword = req.body.oldPassword;
+
     await AuthServices.resetPassword(
       oldPassword,
       newPassword,
@@ -93,11 +96,12 @@ const resetPassword = catchAsync(
 const googleCallbackController = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     let redirectTo = (req.query?.state as string) || "";
+
     if (redirectTo.startsWith("/")) {
       redirectTo = redirectTo.slice(1);
     }
+
     const user = req.user;
-    console.log("User", user);
 
     if (!user) {
       throw new AppError(httpStatus.NOT_FOUND, "User Not Found...");

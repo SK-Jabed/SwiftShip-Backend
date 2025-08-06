@@ -19,6 +19,7 @@ export const createUserTokens = (user: any) => {
     envVars.JWT_ACCESS_SECRET,
     envVars.JWT_ACCESS_EXPIRES
   );
+
   const refreshToken = generateToken(
     jwtPayload,
     envVars.JWT_REFRESH_SECRET,
@@ -40,15 +41,18 @@ export const createNewAccessTokenAndRefreshToken = async (
   ) as JwtPayload;
 
   const isUserExist = await User.findOne({ email: verifiedToken.email });
+
   if (!isUserExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
       "User not found, please register first"
     );
   }
+
   if (isUserExist.isActive === IsActive.BLOCKED) {
     throw new AppError(httpStatus.BAD_REQUEST, "User is blocked");
   }
+
   if (isUserExist.isDeleted) {
     throw new AppError(httpStatus.BAD_REQUEST, "User is deleted");
   }

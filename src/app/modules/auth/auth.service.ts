@@ -4,18 +4,19 @@ import AppError from "../../errorHelpers/AppError";
 import { IUser } from "../user/user.interface";
 import httpStatus from "http-status-codes";
 import { User } from "../user/user.model";
-import bcryptjs from "bcryptjs";
 import { envVars } from "../../config/env";
 import {
   createNewAccessTokenAndRefreshToken,
   createUserTokens,
 } from "../../utils/userTokens";
+import bcryptjs from "bcryptjs";
 import { JwtPayload } from "jsonwebtoken";
 
 const credentialsLogin = async (payload: Partial<IUser>) => {
   const { email, password } = payload;
 
   const isUserExist = await User.findOne({ email });
+
   if (!isUserExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -67,6 +68,7 @@ const resetPassword = async (
     oldPassword,
     user!.password as string
   );
+
   if (!isOldPasswordMatched) {
     throw new AppError(httpStatus.BAD_REQUEST, "Old password doesn't match");
   }

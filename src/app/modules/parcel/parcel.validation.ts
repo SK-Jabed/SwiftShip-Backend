@@ -104,7 +104,9 @@ export const parcelUpdateZodSchema = z.object({
   //   assignedDeliveryPartner: z.string().optional(),
 
   //   parcelFee: parcelFeeZodSchema.optional(),
+
   paymentMethod: z.enum(PaymentMethod).optional(),
+
   //   paymentStatus: z.enum(Payment_Status).optional(),
   //   codAmount: z.number().min(0, "COD amount cannot be negative").optional(),
 

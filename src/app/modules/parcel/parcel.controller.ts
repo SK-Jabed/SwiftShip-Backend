@@ -12,7 +12,7 @@ import { ParcelStatus } from "./parcel.interface";
 const createParcel = catchAsync(async (req: Request, res: Response) => {
   validateRequest(parcelZodSchema)(req, res, async () => {
     const payload = req.body;
-    const senderId = req.user?.userId;
+    const senderId = (req.user as { userId: string })?.userId;
 
     if (!senderId) {
       throw new Error("Sender ID not found in request");
@@ -83,7 +83,7 @@ const cancelParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId } = req.params;
     const { cancellationReason } = req.body;
-    const userId = req.user?.userId;
+    const userId = (req.user as { userId: string })?.userId;
 
     if (!userId) {
       throw new AppError(httpStatus.UNAUTHORIZED, "User not authenticated");
@@ -106,7 +106,7 @@ const cancelParcel = catchAsync(
 
 const getMyParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const userId = req.user?.userId;
+    const userId = (req.user as { userId: string })?.userId;
     const { status, startDate, endDate } = req.query;
 
     if (!userId) {
@@ -146,7 +146,7 @@ const getAllParcelById = catchAsync(
 
 const getIncomingParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const receiverId = req.user?.userId;
+    const receiverId = (req.user as { userId: string })?.userId;
     const { status, fromDate, toDate } = req.query;
 
     if (!receiverId) {
@@ -171,7 +171,7 @@ const getIncomingParcels = catchAsync(
 const confirmParcelDelivery = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId } = req.params;
-    const receiverId = req.user?.userId;
+    const receiverId = (req.user as { userId: string })?.userId;
 
     // Double authentication check
     if (!receiverId) {
@@ -200,7 +200,7 @@ const confirmParcelDelivery = catchAsync(
 
 const getDeliveryHistory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
-    const receiverId = req.user?.userId;
+    const receiverId = (req.user as { userId: string })?.userId;
     const { year, month, status } = req.query;
 
     if (!receiverId) {
@@ -225,7 +225,7 @@ const getDeliveryHistory = catchAsync(
 const blockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId } = req.params;
-    const adminId = req.user?.userId;
+    const adminId = (req.user as { userId: string })?.userId;
     const { blockReason } = req.body;
 
     if (!adminId) {
@@ -250,7 +250,7 @@ const blockParcel = catchAsync(
 const unblockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId } = req.params;
-    const adminId = req.user?.userId;
+    const adminId = (req.user as { userId: string })?.userId;
 
     if (!adminId) {
       throw new AppError(httpStatus.UNAUTHORIZED, "Authentication required");
@@ -270,7 +270,7 @@ const unblockParcel = catchAsync(
 const updateStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId } = req.params;
-    const adminId = req.user?.userId;
+    const adminId = (req.user as { userId: string })?.userId;
     const { status, note } = req.body;
 
     if (!adminId) {
