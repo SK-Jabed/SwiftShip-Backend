@@ -5,6 +5,8 @@
 
 A secure, scalable, and role-based backend system built with **Express.js**, **MongoDB**, **Mongoose**, **Zod**, **JWT**, and **TypeScript**, enabling smooth parcel delivery operations inspired by platforms like Pathao Courier or Sundarban.
 
+🌐 **Live API**: [https://ride-booking-system-backend-blond.vercel.app](https://ride-booking-system-backend-blond.vercel.app)
+
 ---
 
 ## 📖 Table of Contents
@@ -38,12 +40,15 @@ SwiftShip is a backend API service for managing parcel delivery operations. It h
 
 ## ✨ Features
 
-- ✅ JWT Auth + Google OAuth
-- 👥 Role-based Access: Admin, Sender, Receiver
+- 🔐 JWT Authentication + Google OAuth (access & refresh tokens)
+- 👥 Role-based Authorization (`SENDER`, `RECEIVER`, `ADMIN`, `SUPER_ADMIN`)
 - 📦 Parcel lifecycle tracking & logs
 - 📊 Delivery history & cancel/reschedule options
+- 🧾 Embedded status tracking with full delivery logs
 - ❌ Cancel parcels (pre-dispatch only)
+- ✅ Confirm delivery by receivers
 - 🚫 Block/Unblock users or parcels (admin)
+- 📄 Auto-generated Tracking ID for each parcel
 - 🧱 Clean and modular folder architecture
 - 🛡️ Zod validations across all endpoints
 
@@ -111,14 +116,14 @@ src/
 git clone https://github.com/SK-Jabed/SwiftShip-Backend.git
 
 # 2. Navigate to project folder
-cd Parcel-Delivery-Server
+cd parcel-delivery-server
 
 # 3. Install dependencies
 npm install
 
 # 4. Setup environment variables
 cp .env.example .env
-# Fill in required fields in .env (DB_URI, JWT, Google OAuth keys, etc.)
+# Fill in required fields in .env (DB_URI, PORT, JWT, Google OAuth keys, etc.)
 
 # 5. Start development server
 npm run dev
@@ -223,7 +228,8 @@ Each status entry contains:
 
 ```json
 {
-  "senderId": "123456789",
+  "senderId": ObjectId,
+  "receiverId": ObjectId,
   "parcelType": "PACKAGE",
   "weight": 5,
   "description": "Fragile electronics",
