@@ -1,4 +1,3 @@
-
 # 🚀 SwiftShip – Parcel Delivery Backend API
 
 [🌐 Live App](https://swift-ship-backend.vercel.app) | [🛠 Server Repo](https://github.com/SK-Jabed/SwiftShip-Backend)
@@ -54,17 +53,17 @@ SwiftShip is a backend API service for managing parcel delivery operations. It h
 
 ---
 
-##  Tech Stack
+## Tech Stack
 
-| Category       | Technology                    |
-|----------------|-------------------------------|
-| Runtime        | Node.js                       |
-| Framework      | Express.js                    |
-| Language       | TypeScript                    |
-| Database       | MongoDB + Mongoose            |
-| Auth & Security| JWT, bcrypt, cookie-parser    |
-| Validation     | Zod                           |
-| Dev Tools      | dotenv, ts-node-dev, etc.     |
+| Category        | Technology                 |
+| --------------- | -------------------------- |
+| Runtime         | Node.js                    |
+| Framework       | Express.js                 |
+| Language        | TypeScript                 |
+| Database        | MongoDB + Mongoose         |
+| Auth & Security | JWT, bcrypt, cookie-parser |
+| Validation      | Zod                        |
+| Dev Tools       | dotenv, ts-node-dev, etc.  |
 
 ---
 
@@ -87,7 +86,7 @@ src/
 ├── types                 # Types Declaration
 ├── app.ts                 # Express App Init
 └── server.ts              # Server Startup
-````
+```
 
 ---
 
@@ -105,9 +104,9 @@ src/
 
 ### 🔧 Prerequisites
 
-* Node.js v18+
-* MongoDB URI
-* Vercel (for frontend hosting, optional)
+- Node.js v18+
+- MongoDB URI
+- Vercel (for frontend hosting, optional)
 
 ### 🚀 Installation Steps
 
@@ -215,10 +214,10 @@ REQUESTED → APPROVED → PICKED_UP → IN_TRANSIT → DELIVERED
 
 Each status entry contains:
 
-* `status`: Current state of the parcel
-* `timestamp`: Auto-generated ISO timestamp
-* `updatedBy`: Admin/User ID
-* `note`: Optional remarks
+- `status`: Current state of the parcel
+- `timestamp`: Auto-generated ISO timestamp
+- `updatedBy`: Admin/User ID
+- `note`: Optional remarks
 
 ---
 
@@ -259,7 +258,7 @@ Each status entry contains:
 {
   "status": "IN_TRANSIT",
   "note": "Left sorting hub",
-  "location": "Chattogram"
+  "location": "Dhaka"
 }
 ```
 
@@ -267,11 +266,11 @@ Each status entry contains:
 
 ## 🔒 Security
 
-* **Passwords** hashed with `bcryptjs`
-* **JWT tokens** with expiry control via `.env`
-* **Role-based middleware** guards endpoints
-* **Google OAuth** with fallback to credential login
-* **Session Management** with `express-session`
+- **Passwords** hashed with `bcryptjs`
+- **JWT tokens** with expiry control via `.env`
+- **Role-based middleware** guards endpoints
+- **Google OAuth** with fallback to credential login
+- **Session Management** with `express-session`
 
 ---
 
@@ -294,11 +293,11 @@ Licensed under the [ISC License](LICENSE).
 
 Built with ❤️ using:
 
-* [Express.js](https://expressjs.com/)
-* [MongoDB + Mongoose](https://mongoosejs.com/)
-* [Zod](https://zod.dev/)
-* [JWT](https://jwt.io/)
-* [TypeScript](https://www.typescriptlang.org/)
-* [Passport.js](http://www.passportjs.org/)
+- [Express.js](https://expressjs.com/)
+- [MongoDB + Mongoose](https://mongoosejs.com/)
+- [Zod](https://zod.dev/)
+- [JWT](https://jwt.io/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [Passport.js](http://www.passportjs.org/)
 
 ---
