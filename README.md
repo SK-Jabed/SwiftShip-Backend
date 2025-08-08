@@ -1,10 +1,9 @@
+
 # 🚀 SwiftShip – Parcel Delivery Backend API
 
 [🌐 Live App](https://swift-ship-backend.vercel.app) | [🛠 Server Repo](https://github.com/SK-Jabed/SwiftShip-Backend)
 
 A secure, scalable, and role-based backend system built with **Express.js**, **MongoDB**, **Mongoose**, **Zod**, **JWT**, and **TypeScript**, enabling smooth parcel delivery operations inspired by platforms like Pathao Courier or Sundarban.
-
-🌐 **Live API**: [https://ride-booking-system-backend-blond.vercel.app](https://ride-booking-system-backend-blond.vercel.app)
 
 ---
 
@@ -53,17 +52,17 @@ SwiftShip is a backend API service for managing parcel delivery operations. It h
 
 ---
 
-## Tech Stack
+##  Tech Stack
 
-| Category        | Technology                 |
-| --------------- | -------------------------- |
-| Runtime         | Node.js                    |
-| Framework       | Express.js                 |
-| Language        | TypeScript                 |
-| Database        | MongoDB + Mongoose         |
-| Auth & Security | JWT, bcrypt, cookie-parser |
-| Validation      | Zod                        |
-| Dev Tools       | dotenv, ts-node-dev, etc.  |
+| Category       | Technology                    |
+|----------------|-------------------------------|
+| Runtime        | Node.js                       |
+| Framework      | Express.js                    |
+| Language       | TypeScript                    |
+| Database       | MongoDB + Mongoose            |
+| Auth & Security| JWT, bcrypt, cookie-parser    |
+| Validation     | Zod                           |
+| Dev Tools      | dotenv, ts-node-dev, etc.     |
 
 ---
 
@@ -71,6 +70,14 @@ SwiftShip is a backend API service for managing parcel delivery operations. It h
 
 ```bash
 src/
+├── .env
+├── .gitignore
+├── eslint.config.mjs
+├── README.md
+├── package-lock.json
+├── package.json
+├── tsconfig.json
+├── vercel.json
 ├── app/
 │   ├── config/
 │   ├── errorHelpers/
@@ -79,14 +86,14 @@ src/
 │   ├── middlewares/       # Error handlers, auth checks
 │   ├── modules/
 │   │   ├── auth/          # Login, token, Google OAuth
-│   │   ├── user/          # Registration, user login, blocking
-│   │   └── parcel/        # Parcel logic, status, delivery
+│   │   ├── parcel/        # Parcel logic, status, delivery
+│   │   └── user/          # Registration, user login, blocking
 │   ├── routes/            # ENV, session, passport setup
 │   ├── utils/             # Validation helpers, PDF generator
 ├── types                 # Types Declaration
 ├── app.ts                 # Express App Init
 └── server.ts              # Server Startup
-```
+````
 
 ---
 
@@ -100,31 +107,54 @@ src/
 
 ---
 
+## 🚀 Live Site
+
+🌐 **Live API**: [https://swift-ship-backend.vercel.app](https://swift-ship-backend.vercel.app)
+
+---
+
 ## ⚙️ Setup & Installation
 
 ### 🔧 Prerequisites
 
-- Node.js v18+
-- MongoDB URI
-- Vercel (for frontend hosting, optional)
+* Node.js v18+
+* MongoDB URI
+* Vercel (for frontend hosting, optional)
 
 ### 🚀 Installation Steps
 
+1. **Clone the repository**
+
 ```bash
-# 1. Clone the repository
 git clone https://github.com/SK-Jabed/SwiftShip-Backend.git
+```
 
-# 2. Navigate to project folder
+2. **Navigate to project folder**
+
+```bash
 cd parcel-delivery-server
+```
 
-# 3. Install dependencies
+3. **Install dependencies**
+
+```bash
 npm install
+```
 
-# 4. Setup environment variables
-cp .env.example .env
+4. **Setup environment variables**
+
+```bash
+PORT=5000
+DATABASE_URI=your_mongo_uri
+JWT_SECRET=your_secret
+BCRYPT_SALT_ROUNDS=10
+
 # Fill in required fields in .env (DB_URI, PORT, JWT, Google OAuth keys, etc.)
+```
 
-# 5. Start development server
+5. **Start development server**
+
+```bash
 npm run dev
 ```
 
@@ -133,14 +163,92 @@ npm run dev
 ```env
 PORT=5000
 DB_URI=mongodb+srv://username:password@cluster.mongodb.net/swiftShipDB
-JWT_ACCESS_SECRET=yourAccessSecret
-JWT_REFRESH_SECRET=yourRefreshSecret
+NODE_ENV=development
+
+# JWT SECRETS & EXPIRATION
+JWT_ACCESS_SECRET=your_jwt_access_secret
+JWT_ACCESS_EXPIRES=1D(as example)
+
+JWT_REFRESH_SECRET=your_jwt_refresh_secret
+JWT_REFRESH_EXPIRES=30D(as example)
+
+# BCRYPT
+BCRYPT_SALT_ROUND=10(as example)
+
+# SUPER ADMIN CREDENTIALS
 SUPER_ADMIN_EMAIL=superadmin@example.com
 SUPER_ADMIN_PASSWORD=StrongPass123
-GOOGLE_CLIENT_ID=xxx.apps.googleusercontent.com
-GOOGLE_CLIENT_SECRET=xxxx
+
+# GOOGLE AUTHENTICATION
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=https://swift-ship-backend.vercel.app/api/v1/auth/google/callback
+
+# EXPRESS SESSION
+EXPRESS_SESSION_SECRET=your_express_session_secret
+
+# FRONTEND URL
 FRONTEND_URL=http://localhost:5173
 ```
+
+---
+
+## 🛡️ Super Admin Credentials
+
+A default **SUPER_ADMIN** account is pre-configured for platform-level control.
+
+- Email: superadmin@gmail.com
+- Password: 123456Aa@
+
+---
+
+## 👥 Other Credentials
+
+### **ADMIN Credentials**
+
+- Email: admin@gmail.com
+- Password: 123456Aa@
+
+### **SENDER Credentials**
+
+- Email: sender@gmail.com
+- Password: 123456Aa@
+
+### **RECEIVER Credentials**
+
+- Email: receiver@gmail.com
+- Password: 123456Aa@
+
+---
+
+## 🔌 API Base URL
+
+```
+https://swift-ship-backend.vercel.app/api/v1
+```
+
+---
+
+## 📭 API Testing with Postman
+
+You can test all the backend API routes using the provided Postman collection.
+
+**🗂 File:** [`Parcel Delivery System.postman_collection.json`](./Parcel_Delivery_System.postman_collection.json)
+
+### 🔧 How to Use
+
+1. Open [Postman](https://www.postman.com/).
+2. Click on `Import` in the top-left corner.
+3. Select the `Parcel Delivery System.postman_collection.json` file.
+4. Set your environment variables such as:
+   - `base_url` → `https://swift-ship-backend.vercel.app` *(or your local URL)*
+   - `accessToken` → Your JWT access token after login
+5. Start testing each route directly!
+
+This collection includes:
+- Authentication flows
+- Sender, Receiver, and Admin route testing
+- Real examples for ride parcel management, cancel parcel, and admin reports
 
 ---
 
@@ -214,16 +322,37 @@ REQUESTED → APPROVED → PICKED_UP → IN_TRANSIT → DELIVERED
 
 Each status entry contains:
 
-- `status`: Current state of the parcel
-- `timestamp`: Auto-generated ISO timestamp
-- `updatedBy`: Admin/User ID
-- `note`: Optional remarks
+* `status`: Current state of the parcel
+* `timestamp`: Auto-generated ISO timestamp
+* `updatedAt`: Updating time
+* `updatedBy`: Admin/User ID
+* `location`: Optional remarks
+* `note`: Optional remarks
 
 ---
 
-## 🧾 Sample Payloads
+## 🔍 Parcel Tracking Format
+Every parcel has a unique tracking ID like:
 
-### 📬 Create Parcel
+```bash
+TRK-20250802-000001
+```
+
+---
+
+## 🧾 Sample Payloads & Schema
+
+### 🧑 User Create Schema (Example)
+
+```json
+{
+    "name" : "Tony Stark",
+    "email": "rdj@gmail.com",
+    "password": "123456Aa@"
+}
+```
+
+### 📦 Parcel Create Schema (Example)
 
 ```json
 {
@@ -258,19 +387,45 @@ Each status entry contains:
 {
   "status": "IN_TRANSIT",
   "note": "Left sorting hub",
-  "location": "Dhaka"
+  "location": "Chattogram"
 }
+```
+
+```
+### 🔁 Parcel Status Logs
+Each parcel contains a statusLogs array to track its full journey. Each log contains:
+
+```bash
+statusLogs: [
+  {
+    status: 'PICKED' | 'IN_TRANSIT' | 'DELIVERED' | ...,
+    location: 'Dhaka Hub',
+    note: 'Parcel left the station',
+    timestamp: Date,
+    updatedBy: UserID or 'SYSTEM'
+  }
+]
+
+
+```
+
+Accessible via:
+
+```bash
+
+GET /api/parcels/:id/status-log
+
 ```
 
 ---
 
 ## 🔒 Security
 
-- **Passwords** hashed with `bcryptjs`
-- **JWT tokens** with expiry control via `.env`
-- **Role-based middleware** guards endpoints
-- **Google OAuth** with fallback to credential login
-- **Session Management** with `express-session`
+* **Passwords** hashed with `bcryptjs`
+* **JWT tokens** with expiry control via `.env`
+* **Role-based middleware** guards endpoints
+* **Google OAuth** with fallback to credential login
+* **Session Management** with `express-session`
 
 ---
 
@@ -278,7 +433,7 @@ Each status entry contains:
 
 🧪 [Postman Collection (Download)]()
 
-> Use test tokens or login credentials. Adjust `Authorization: Bearer <token>` headers per user role.
+> Use test tokens or login credentials. Adjust `Authorization: Bearer <token> (JWT Access Token)` headers per user role.
 
 ---
 
@@ -293,11 +448,16 @@ Licensed under the [ISC License](LICENSE).
 
 Built with ❤️ using:
 
-- [Express.js](https://expressjs.com/)
-- [MongoDB + Mongoose](https://mongoosejs.com/)
-- [Zod](https://zod.dev/)
-- [JWT](https://jwt.io/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [Passport.js](http://www.passportjs.org/)
+* [Express.js](https://expressjs.com/)
+* [MongoDB + Mongoose](https://mongoosejs.com/)
+* [Zod](https://zod.dev/)
+* [JWT](https://jwt.io/)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Passport.js](http://www.passportjs.org/)
 
 ---
+
+## ✨ Author
+
+**Sheikh Jabed**  
+[GitHub Profile](https://github.com/SK-Jabed)
