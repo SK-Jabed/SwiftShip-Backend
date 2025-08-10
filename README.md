@@ -228,7 +228,7 @@ https://swift-ship-backend.vercel.app/api/v1
 
 You can test all the backend API routes using the provided Postman collection.
 
-**🗂 File:** [`SwiftShip APIs.postman_collection.json`](./SwiftShip APIs.postman_collection.json)
+**🗂 File:** [SwiftShip APIs](https://github.com/SK-Jabed/SwiftShip-Backend/blob/main/SwiftShip%20APIs.postman_collection.json)
 
 ### 🔧 How to Use
 
@@ -465,14 +465,6 @@ statusLogs: [
 
 
 ```
-
----
-
-## 🧭 Postman Collection
-
-🧪 [Postman Collection (Download)]()
-
-> Use test tokens or login credentials. Adjust `Authorization: Bearer <token> (JWT Access Token)` headers per user role.
 
 ---
 
