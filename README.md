@@ -234,7 +234,7 @@ You can test all the backend API routes using the provided Postman collection.
 
 1. Open [Postman](https://www.postman.com/).
 2. Click on `Import` in the top-left corner.
-3. Select the `Parcel Delivery System.postman_collection.json` file.
+3. Select the `SwiftShipAPIs.postman_collection.json` file.
 4. Set your environment variables such as:
    - `base_url` → `https://swift-ship-backend.vercel.app` _(or your local URL)_
    - `accessToken` → Your JWT access token after login
