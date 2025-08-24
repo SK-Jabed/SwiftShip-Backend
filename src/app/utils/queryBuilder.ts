@@ -30,7 +30,9 @@ export class QueryBuilder<T> {
         [field]: { $regex: searchTerm, $options: "i" },
       })),
     };
+    
     this.modelQuery = this.modelQuery.find(searchQuery);
+
     return this;
   }
 
@@ -41,6 +43,7 @@ export class QueryBuilder<T> {
 
     return this;
   }
+
   fields(): this {
     const fields = this.query.fields?.split(",").join(" ") || "";
 
@@ -48,6 +51,7 @@ export class QueryBuilder<T> {
 
     return this;
   }
+
   paginate(): this {
     const page = Number(this.query.page) || 1;
     const limit = Number(this.query.limit) || 10;
