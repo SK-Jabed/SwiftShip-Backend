@@ -45,7 +45,6 @@ const updateUser = catchAsync(
   }
 );
 
-
 const getAllUsers = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const result = await UserServices.getAllUsers();
