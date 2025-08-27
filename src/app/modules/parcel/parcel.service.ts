@@ -207,8 +207,6 @@ const cancelParcel = async (
 
 
 
-
-
 const getAllParcelById = async (id: string, user: any) => {
   if (id !== user.userId) {
     throw new AppError(
