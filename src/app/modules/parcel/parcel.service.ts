@@ -1,8 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import AppError from "../../errorHelpers/AppError";
 import { generateTrackingId } from "../../utils/generateTrackingId";
-import { getTransactionId } from "../../utils/getTransactionId";
 import { QueryBuilder } from "../../utils/queryBuilder";
 import { IsActive, Role } from "../user/user.interface";
 import { User } from "../user/user.model";
