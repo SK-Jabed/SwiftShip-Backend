@@ -64,7 +64,6 @@ const updateParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.parcelId;
     const updateData = req.body;
-    // console.log(parcelId)
 
     const updatedParcel = await ParcelServices.updateParcel(
       parcelId as string,
@@ -133,7 +132,6 @@ const getAllParcelById = catchAsync(
     const id = req.params.id;
     const user = req.user;
 
-    // console.log(id, user);
     const updatedParcel = await ParcelServices.getAllParcelById(id, user);
     sendResponse(res, {
       success: true,
