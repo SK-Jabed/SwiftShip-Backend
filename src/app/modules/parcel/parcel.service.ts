@@ -186,8 +186,6 @@ const cancelParcel = async (
       );
     }
 
-
-
     await session.commitTransaction();
     return updatedParcel;
   } catch (error) {
@@ -599,10 +597,6 @@ const updateDeliveryStatus = async (
 //     )
 //       .populate("senderId receiverId", "name email phone")
 //       .populate("assignedDeliveryPersonnel", "name phone vehicle");
-
-//     if (!parcel) {
-//       throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
-//     }
 
 //     // Notify personnel
 
