@@ -186,12 +186,7 @@ const cancelParcel = async (
       );
     }
 
-    // if (updatedParcel.paymentMethod === "PREPAID") {
-    //   await PaymentService.processRefund(
-    //     updatedParcel.paymentId,
-    //     updatedParcel.parcelFee.totalFee
-    //   );
-    // }
+
 
     await session.commitTransaction();
     return updatedParcel;
