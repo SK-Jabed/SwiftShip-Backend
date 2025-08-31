@@ -150,7 +150,6 @@ const blockUser = async (userId: string, adminId: string) => {
       { new: true, session }
     );
 
-
     await session.commitTransaction();
 
     return {
@@ -194,7 +193,6 @@ const unblockUser = async (userId: string, adminId: string) => {
     throw new AppError(403, "Cannot unblock admin users");
   }
 
-  // Prevent self-blocking
   if (userId === adminId) {
     throw new AppError(400, "Cannot unblock yourself");
   }
