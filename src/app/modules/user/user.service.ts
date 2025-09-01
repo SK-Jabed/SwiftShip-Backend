@@ -214,8 +214,6 @@ const unblockUser = async (userId: string, adminId: string) => {
       { new: true, session }
     );
 
-   
-
     await session.commitTransaction();
 
     return {
