@@ -206,7 +206,6 @@ const unblockUser = async (userId: string, adminId: string) => {
   session.startTransaction();
 
   try {
-    // Block the user
     const unblockedUser = await User.findByIdAndUpdate(
       userId,
       {
@@ -215,8 +214,7 @@ const unblockUser = async (userId: string, adminId: string) => {
       { new: true, session }
     );
 
-    // Create block log entry (optional - for audit trail)
-    // You might want to create a separate BlockLog model for this
+   
 
     await session.commitTransaction();
 
