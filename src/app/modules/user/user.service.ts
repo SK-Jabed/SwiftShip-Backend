@@ -197,7 +197,6 @@ const unblockUser = async (userId: string, adminId: string) => {
     throw new AppError(400, "Cannot unblock yourself");
   }
 
-  // Check if already blocked
   if (userToUnBlock.isActive === IsActive.ACTIVE) {
     throw new AppError(400, "User is already active");
   }
