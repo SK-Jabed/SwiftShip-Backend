@@ -168,7 +168,6 @@ const unblockUser = async (userId: string, adminId: string) => {
     throw new AppError(400, "User ID, reason, and admin ID are required");
   }
 
-  // Verify admin permissions
   const admin = await User.findById(adminId);
   
   if (
@@ -178,7 +177,6 @@ const unblockUser = async (userId: string, adminId: string) => {
     throw new AppError(403, "Only admins can block users");
   }
 
-  // Get user to block
   const userToUnBlock = await User.findById(userId);
   if (!userToUnBlock) {
     throw new AppError(404, "User not found");
