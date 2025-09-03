@@ -598,8 +598,6 @@ const updateDeliveryStatus = async (
 //       .populate("senderId receiverId", "name email phone")
 //       .populate("assignedDeliveryPersonnel", "name phone vehicle");
 
-//     // Notify personnel
-
 //     await session.commitTransaction();
 //     return parcel;
 //   } catch (error) {
