@@ -27,6 +27,10 @@ const updateUser = catchAsync(
 
     // const verifiedToken = verifyToken(token as string, envVars.JWT_ACCESS_SECRET) as JwtPayload
 
+
+
+
+    
     const verifiedToken = req.user;
     const payload = req.body;
 
