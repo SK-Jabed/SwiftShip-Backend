@@ -40,8 +40,6 @@ const createUser = async (payload: Partial<IUser>) => {
   return user;
 };
 
-
-
 const updateUser = async (
   userId: string,
   payload: Partial<IUser>,
