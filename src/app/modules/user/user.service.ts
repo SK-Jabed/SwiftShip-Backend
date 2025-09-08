@@ -191,6 +191,9 @@ const unblockUser = async (userId: string, adminId: string) => {
     throw new AppError(403, "Cannot unblock admin users");
   }
 
+
+
+  
   if (userId === adminId) {
     throw new AppError(400, "Cannot unblock yourself");
   }
