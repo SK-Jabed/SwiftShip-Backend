@@ -182,7 +182,6 @@ const unblockUser = async (userId: string, adminId: string) => {
     throw new AppError(404, "User not found");
   }
 
-  // Prevent blocking other admins (unless super admin)
   if (
     (userToUnBlock.role === Role.ADMIN ||
       userToUnBlock.role === Role.SUPER_ADMIN) &&
