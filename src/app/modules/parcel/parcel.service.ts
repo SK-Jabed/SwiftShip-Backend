@@ -14,9 +14,6 @@ const createParcel = async (payload: IParcel, senderId: string) => {
   const session = await Parcel.startSession();
   session.startTransaction();
 
-
-
-  
   try {
     const sender = await User.findById(senderId).session(session);
     if (!sender) {
