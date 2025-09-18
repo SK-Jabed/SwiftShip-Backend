@@ -264,9 +264,6 @@ const getSenderParcels = async (
     .sort({ createdAt: -1 });
 };
 
-
-
-
 const getReceiverParcels = async (
   receiverId: string,
   filters: {
