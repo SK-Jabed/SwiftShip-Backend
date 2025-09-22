@@ -580,7 +580,6 @@ const updateDeliveryStatus = async (
 //       throw new AppError(httpStatus.BAD_REQUEST, "Invalid delivery personnel");
 //     }
 
-
 //     const parcel = await Parcel.findByIdAndUpdate(
 //       parcelId,
 //       {
@@ -598,8 +597,6 @@ const updateDeliveryStatus = async (
 //     )
 //       .populate("senderId receiverId", "name email phone")
 //       .populate("assignedDeliveryPersonnel", "name phone vehicle");
-
-
 
 //     await session.commitTransaction();
 //     return parcel;
