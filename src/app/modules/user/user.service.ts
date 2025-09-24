@@ -90,9 +90,6 @@ const updateUser = async (
   return newUpdatedUser;
 };
 
-
-
-
 const getAllUsers = async () => {
   const users = await User.find();
   const totalUsers = await User.countDocuments();
