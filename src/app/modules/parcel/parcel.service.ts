@@ -203,6 +203,7 @@ const getAllParcelById = async (id: string, user: any) => {
       "Access denied: You can only view your own parcels"
     );
   }
+  
   let query: any = {};
 
   if (user.role == Role.DELIVERY_PERSON) {
@@ -252,6 +253,7 @@ const getSenderParcels = async (
   const query: any = { senderId: userId, isDeleted: { $ne: true } };
 
   if (filters.status) query.status = filters.status;
+
   if (filters.startDate || filters.endDate) {
     query.createdAt = {};
     if (filters.startDate) query.createdAt.$gte = filters.startDate;
