@@ -4,9 +4,6 @@
 
 A secure, scalable, and role-based backend system built with **Express.js**, **MongoDB**, **Mongoose**, **Zod**, **JWT**, and **TypeScript**, enabling smooth parcel delivery operations inspired by platforms like Pathao Courier or Sundarban.
 
-
-
-
 ---
 
 ## 📖 Table of Contents
@@ -31,8 +28,6 @@ A secure, scalable, and role-based backend system built with **Express.js**, **M
 - [✨ Author](#-author)
 
 ---
-
-
 
 
 ## 🎯 Project Overview

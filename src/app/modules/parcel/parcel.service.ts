@@ -85,6 +85,7 @@ const getAllParcel = async (query: Record<string, string>) => {
     allParcel.build(),
     queryBuilder.getMeta(),
   ]);
+  
   return {
     data,
     meta,
@@ -95,7 +96,9 @@ const getSingleParcelStatus = async (trackingId: string) => {
   if (!trackingId) {
     throw new AppError(400, "Invalid tracking ID provided");
   }
+
   const selectedParcelStatus = await Parcel.findOne({ trackingId: trackingId });
+
   if (!selectedParcelStatus) {
     throw new AppError(404, "Parcel not found with the provided tracking ID");
   }
@@ -142,6 +145,7 @@ const cancelParcel = async (
 
   try {
     const parcel = await Parcel.findById(parcelId).session(session);
+
     if (!parcel) {
       throw new AppError(httpStatus.NOT_FOUND, "Parcel not found");
     }
@@ -203,7 +207,7 @@ const getAllParcelById = async (id: string, user: any) => {
       "Access denied: You can only view your own parcels"
     );
   }
-  
+
   let query: any = {};
 
   if (user.role == Role.DELIVERY_PERSON) {
