@@ -16,9 +16,11 @@ const createParcel = async (payload: IParcel, senderId: string) => {
 
   try {
     const sender = await User.findById(senderId).session(session);
+
     if (!sender) {
       throw new AppError(httpStatus.NOT_FOUND, "Sender not found");
     }
+
     if (sender.isActive === IsActive.BLOCKED) {
       throw new AppError(
         httpStatus.FORBIDDEN,
@@ -85,7 +87,7 @@ const getAllParcel = async (query: Record<string, string>) => {
     allParcel.build(),
     queryBuilder.getMeta(),
   ]);
-  
+
   return {
     data,
     meta,
@@ -392,6 +394,7 @@ const getDeliveryHistory = async (
 
   if (filters.year || filters.month) {
     query.actualDeliveryDate = {};
+    
     if (filters.year) {
       query.actualDeliveryDate.$gte = new Date(filters.year, 0, 1);
       query.actualDeliveryDate.$lte = new Date(filters.year + 1, 0, 1);
