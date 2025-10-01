@@ -394,7 +394,7 @@ const getDeliveryHistory = async (
 
   if (filters.year || filters.month) {
     query.actualDeliveryDate = {};
-    
+
     if (filters.year) {
       query.actualDeliveryDate.$gte = new Date(filters.year, 0, 1);
       query.actualDeliveryDate.$lte = new Date(filters.year + 1, 0, 1);
@@ -608,9 +608,11 @@ const updateDeliveryStatus = async (
 //       .populate("assignedDeliveryPersonnel", "name phone vehicle");
 
 //     await session.commitTransaction();
+
 //     return parcel;
 //   } catch (error) {
 //     await session.abortTransaction();
+
 //     throw error;
 //   } finally {
 //     session.endSession();
