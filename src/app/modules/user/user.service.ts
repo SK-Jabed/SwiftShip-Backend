@@ -8,9 +8,6 @@ import { IAuthProvider, IsActive, IUser, Role } from "./user.interface";
 
 
 
-
-
-
 const createUser = async (payload: Partial<IUser>) => {
   const { email, password, ...rest } = payload;
 
