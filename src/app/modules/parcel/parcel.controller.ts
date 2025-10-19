@@ -171,7 +171,6 @@ const confirmParcelDelivery = catchAsync(
     const { parcelId } = req.params;
     const receiverId = (req.user as { userId: string })?.userId;
 
-    // Double authentication check
     if (!receiverId) {
       throw new AppError(
         httpStatus.UNAUTHORIZED,
