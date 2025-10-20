@@ -198,6 +198,8 @@ const confirmParcelDelivery = catchAsync(
   }
 );
 
+
+
 const getDeliveryHistory = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const receiverId = (req.user as { userId: string })?.userId;
