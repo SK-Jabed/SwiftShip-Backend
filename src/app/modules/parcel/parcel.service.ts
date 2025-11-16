@@ -619,6 +619,185 @@ const updateDeliveryStatus = async (
 //   }
 // };
 
+// const assignDeliveryPersonnel = async (
+//   parcelId: string,
+//   adminId: string,
+//   personnelId: string
+// ) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     // Validate personnel exists and has delivery role
+//     const personnel = await User.findById(personnelId).session(session);
+//     if (!personnel || personnel.role !== "DELIVERY_PERSON") {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Invalid delivery personnel");
+//     }
+
+//     const parcel = await Parcel.findByIdAndUpdate(
+//       parcelId,
+//       {
+//         assignedDeliveryPersonnel: personnelId,
+//         $push: {
+//           statusLogs: {
+//             status: "ASSIGNED",
+//             updatedAt: new Date(),
+//             updatedBy: adminId,
+//             note: `Assigned to delivery personnel ${personnel.name}`,
+//           },
+//         },
+//       },
+//       { new: true, session }
+//     )
+//       .populate("senderId receiverId", "name email phone")
+//       .populate("assignedDeliveryPersonnel", "name phone vehicle");
+
+//     await session.commitTransaction();
+
+//     return parcel;
+//   } catch (error) {
+//     await session.abortTransaction();
+
+//     throw error;
+//   } finally {
+//     session.endSession();
+//   }
+// };
+// const assignDeliveryPersonnel = async (
+//   parcelId: string,
+//   adminId: string,
+//   personnelId: string
+// ) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     // Validate personnel exists and has delivery role
+//     const personnel = await User.findById(personnelId).session(session);
+//     if (!personnel || personnel.role !== "DELIVERY_PERSON") {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Invalid delivery personnel");
+//     }
+
+//     const parcel = await Parcel.findByIdAndUpdate(
+//       parcelId,
+//       {
+//         assignedDeliveryPersonnel: personnelId,
+//         $push: {
+//           statusLogs: {
+//             status: "ASSIGNED",
+//             updatedAt: new Date(),
+//             updatedBy: adminId,
+//             note: `Assigned to delivery personnel ${personnel.name}`,
+//           },
+//         },
+//       },
+//       { new: true, session }
+//     )
+//       .populate("senderId receiverId", "name email phone")
+//       .populate("assignedDeliveryPersonnel", "name phone vehicle");
+
+//     await session.commitTransaction();
+
+//     return parcel;
+//   } catch (error) {
+//     await session.abortTransaction();
+
+//     throw error;
+//   } finally {
+//     session.endSession();
+//   }
+// };
+
+// const assignDeliveryPersonnel = async (
+//   parcelId: string,
+//   adminId: string,
+//   personnelId: string
+// ) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     // Validate personnel exists and has delivery role
+//     const personnel = await User.findById(personnelId).session(session);
+//     if (!personnel || personnel.role !== "DELIVERY_PERSON") {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Invalid delivery personnel");
+//     }
+
+//     const parcel = await Parcel.findByIdAndUpdate(
+//       parcelId,
+//       {
+//         assignedDeliveryPersonnel: personnelId,
+//         $push: {
+//           statusLogs: {
+//             status: "ASSIGNED",
+//             updatedAt: new Date(),
+//             updatedBy: adminId,
+//             note: `Assigned to delivery personnel ${personnel.name}`,
+//           },
+//         },
+//       },
+//       { new: true, session }
+//     )
+//       .populate("senderId receiverId", "name email phone")
+//       .populate("assignedDeliveryPersonnel", "name phone vehicle");
+
+//     await session.commitTransaction();
+
+//     return parcel;
+//   } catch (error) {
+//     await session.abortTransaction();
+
+//     throw error;
+//   } finally {
+//     session.endSession();
+//   }
+// };
+
+// const assignDeliveryPersonnel = async (
+//   parcelId: string,
+//   adminId: string,
+//   personnelId: string
+// ) => {
+//   const session = await mongoose.startSession();
+//   session.startTransaction();
+
+//   try {
+//     // Validate personnel exists and has delivery role
+//     const personnel = await User.findById(personnelId).session(session);
+//     if (!personnel || personnel.role !== "DELIVERY_PERSON") {
+//       throw new AppError(httpStatus.BAD_REQUEST, "Invalid delivery personnel");
+//     }
+
+//     const parcel = await Parcel.findByIdAndUpdate(
+//       parcelId,
+//       {
+//         assignedDeliveryPersonnel: personnelId,
+//         $push: {
+//           statusLogs: {
+//             status: "ASSIGNED",
+//             updatedAt: new Date(),
+//             updatedBy: adminId,
+//             note: `Assigned to delivery personnel ${personnel.name}`,
+//           },
+//         },
+//       },
+//       { new: true, session }
+//     )
+//       .populate("senderId receiverId", "name email phone")
+//       .populate("assignedDeliveryPersonnel", "name phone vehicle");
+
+//     await session.commitTransaction();
+
+//     return parcel;
+//   } catch (error) {
+//     await session.abortTransaction();
+
+//     throw error;
+//   } finally {
+//     session.endSession();
+//   }
+// };
+
 export const ParcelServices = {
   createParcel,
   getAllParcel,
