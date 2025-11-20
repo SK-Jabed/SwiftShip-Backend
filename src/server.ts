@@ -5,6 +5,8 @@ import { envVars } from "./app/config/env";
 import { seedSuperAdmin } from "./app/utils/seedSuperAdmin";
 import app from "./app";
 
+
+
 let server: Server;
 
 const startServer = async () => {
