@@ -1,17 +1,16 @@
 /* eslint-disable no-console */
-import bcryptjs from "bcryptjs";
-import { User } from "../modules/user/user.model";
 import { envVars } from "../config/env";
-import { IAuthProvider, IUser, Role } from "../modules/user/user.interface";
+import { IAuthProviders, IUser, Role } from "../modules/user/user.interface";
+import { User } from "../modules/user/user.model";
+import bcryptjs from "bcryptjs";
 
 export const seedSuperAdmin = async () => {
   try {
     const isSuperAdminExist = await User.findOne({
       email: envVars.SUPER_ADMIN_EMAIL,
     });
-    
     if (isSuperAdminExist) {
-      console.log("Super Admin Already Exist....");
+      console.log("Super Admin Exist....");
       return;
     }
 
@@ -20,19 +19,18 @@ export const seedSuperAdmin = async () => {
       Number(envVars.BCRYPT_SALT_ROUND)
     );
 
-    const authProvider: IAuthProvider = {
+    const authProvider: IAuthProviders = {
       provider: "credentials",
       providerId: envVars.SUPER_ADMIN_EMAIL,
     };
-
     const payload: IUser = {
-      name: "Super Admin",
+      name: "Super Duper Admin",
       email: envVars.SUPER_ADMIN_EMAIL,
       role: Role.SUPER_ADMIN,
       password: hashedPassword,
-      phone: "+8801869696969",
+      phone: "018********",
       address: {
-        district: "xyz",
+        division: "xyz",
         city: "xyz",
         area: "xyz",
       },
@@ -42,7 +40,7 @@ export const seedSuperAdmin = async () => {
 
     const superAdmin = await User.create(payload);
 
-    console.log("Super Admin Created Successfully", superAdmin);
+    console.log("super admin created successfully", superAdmin);
   } catch (error) {
     console.log(error);
   }

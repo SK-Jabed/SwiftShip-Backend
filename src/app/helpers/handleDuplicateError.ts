@@ -1,10 +1,10 @@
 import { TGenericErrorResponse } from "../interfaces/error.types";
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
-export const handlerDuplicateError = (err: any): TGenericErrorResponse => {
-  const matchedArray = err.message.match(/"([^"]*)"/);
+export const handleDupliacteError = (err: any): TGenericErrorResponse => {
+  const duplicate = err.message.match(/"([^*]*)"/);
   return {
     statusCode: 400,
-    message: `${matchedArray[1]} already exists!!`,
+    message: `Duplicate error at ${duplicate[1]} || ${err.message}`,
   };
 };

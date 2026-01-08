@@ -1,43 +1,50 @@
-import { Router } from "express";
-import { UserControllers } from "./user.controller";
-import { validateRequest } from "../../utils/validateRequest";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+import { NextFunction, Request, Response, Router } from "express";
+import { userController } from "./user.controller";
+
 import {
   blockZodSchema,
   createUserZodSchema,
   updateUserZodSchema,
 } from "./user.validation";
-import { checkAuth } from "../../middlewares/checkAuth";
+import { validateRequest } from "../../utils/validateRequest";
 import { Role } from "./user.interface";
+import { checkAuth } from "../../middlewares/checkAuth";
 
 const router = Router();
 
 router.post(
   "/register",
   validateRequest(createUserZodSchema),
-  UserControllers.createUser
+  userController.createUser
 );
 router.get(
   "/all-users",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  UserControllers.getAllUsers
+  userController.getAllUser
 );
+router.get(
+  "/all-users-by-role",
+  checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
+  userController.getAllUserByRole
+);
+router.get("/me", checkAuth(...Object.values(Role)), userController.getMe);
 router.patch(
   "/:id",
   validateRequest(updateUserZodSchema),
   checkAuth(...Object.values(Role)),
-  UserControllers.updateUser
+  userController.updateUser
 );
 router.patch(
-  "/block/:id",
-  validateRequest(blockZodSchema),
+  "/:id/block-unblock",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  UserControllers.blockUser
+  userController.blockUser
 );
 router.patch(
-  "/unblock/:id",
+  "/:id/unblock",
   validateRequest(blockZodSchema),
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  UserControllers.unblockUser
+  userController.unblockUser
 );
 
 export const UserRoutes = router;

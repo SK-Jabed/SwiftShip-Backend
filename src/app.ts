@@ -1,48 +1,44 @@
-import express, { Application, Request, Response } from "express";
-import { router } from "./app/routes";
-import { globalErrorHandler } from "./app/middlewares/globalErrorHandler";
-import { notFound } from "./app/middlewares/notFound";
-import { envVars } from "./app/config/env";
+/* eslint-disable @typescript-eslint/no-unused-vars */
+import express, { NextFunction, Request, Response } from "express";
+import cors from "cors";
+import { router } from "./app/routes/routes.index";
+// import httpStatus from "http-status-codes"
+import { globalErrorhandlers } from "./app/middlewares/globalErrorHandler";
 import cookieParser from "cookie-parser";
+import { notFound } from "./app/middlewares/notFound";
 import passport from "passport";
 import expressSession from "express-session";
-import cors from "cors";
-import "./app/config/passport";
-
-const app: Application = express();
+import { envVars } from "./app/config/env";
+const app = express();
 
 app.use(
   expressSession({
-    secret: envVars.EXPRESS_SESSION_SECRET,
+    secret: "Secret",
     resave: false,
     saveUninitialized: false,
   })
 );
+app.use(express.json());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.urlencoded({ extended: true }));
+app.set("trust proxy", 1);
+app.use(
+  cors({
+    origin: envVars.FRONTEND_URL,
+    credentials: true,
+  })
+);
 app.use(cookieParser());
-app.use(express.json());
-app.use(cors());
-
 app.use("/api/v1", router);
 
 app.get("/", (req: Request, res: Response) => {
-  try {
-    res.status(200).json({
-      message: "✅ Parcel Delivery System Server is Running...",
-    });
-  } catch (error) {
-    res.json({
-      message: "❌ Something Went Wrong!",
-      error: error,
-    });
-  }
+  res
+    .status(200)
+    .json({ message: "Welcome to Parcel Delivery system server " });
 });
 
-// Global Error Handler
-app.use(globalErrorHandler);
+app.use(globalErrorhandlers);
 
-// Not Found Route Handler
 app.use(notFound);
-
 export default app;

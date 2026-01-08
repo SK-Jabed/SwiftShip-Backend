@@ -1,47 +1,51 @@
 import { Types } from "mongoose";
 
-export interface IUserAddress {
-  district?: string;
+export interface User_Address {
+  division?: string;
   city?: string;
   area?: string;
   roadNo?: string;
   houseNo?: string;
 }
-
 export enum Role {
   SUPER_ADMIN = "SUPER_ADMIN",
-  ADMIN = "ADMIN",
   SENDER = "SENDER",
+  ADMIN = "ADMIN",
   RECEIVER = "RECEIVER",
   DELIVERY_PERSON = "DELIVERY_PERSON",
 }
-
 export enum IsActive {
   ACTIVE = "ACTIVE",
   INACTIVE = "INACTIVE",
   BLOCKED = "BLOCKED",
 }
 
-export interface IAuthProvider {
+export interface IAuthProviders {
   provider: "google" | "credentials";
   providerId: string;
 }
-
 export interface IUser {
-  _id?: Types.ObjectId;
+  _id?: string;
   name: string;
   email: string;
-  password?: string;
-  phone?: string;
+  password: string;
+  phone: string;
   picture?: string;
-  address?: IUserAddress;
+  address?: User_Address;
   isActive?: IsActive;
   isVerified?: boolean;
   isDeleted?: boolean;
+
+  auths: IAuthProviders[];
   role: Role;
-  auths: IAuthProvider[];
-  parcelsSent?: Types.ObjectId[];
-  parcelsReceived?: Types.ObjectId[];
-  createdAt?: Date;
-  updatedAt?: Date;
+  sentParcels?: Types.ObjectId[]; // Parcels this user sent (for SENDER role)
+  receivedParcels?: Types.ObjectId[]; // Parcels this user received (for RECEIVER role)
+}
+
+export interface IUserToken {
+  userId: string;
+  email: string;
+  role: string;
+  iat: number;
+  exp: number;
 }

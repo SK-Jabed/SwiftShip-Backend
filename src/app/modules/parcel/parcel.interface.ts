@@ -1,74 +1,70 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Types } from "mongoose";
-import { IUser, Role } from "../user/user.interface";
 
-export enum CancelReason {
+export enum Cancel_Reason {
   DELIVERY_FAILED = "DELIVERY_FAILED",
   ADDRESS_ISSUE = "ADDRESS_ISSUE",
   RECEIVER_REJECTED = "RECEIVER_REJECTED",
   SENDER_REQUESTED = "SENDER_REQUESTED",
   BUSINESS_POLICY = "BUSINESS_POLICY",
 }
-
-export interface IReturnParcelPayload {
+export interface ReturnParcelPayload {
   returnReason: string;
-  returnType: CancelReason;
-  requestedBy: string;
+  returnType: Cancel_Reason;
+  requestedBy: string; // userId who requested return
   returnLocation?: string;
 }
-
-export enum ParcelStatus {
+export enum Parcel_Status {
   REQUESTED = "REQUESTED",
   APPROVED = "APPROVED",
   PICKED_UP = "PICKED_UP",
   IN_TRANSIT = "IN_TRANSIT",
   DELIVERED = "DELIVERED",
+  CONFIRMED = "CONFIRMED",
   CANCELLED = "CANCELLED",
   BLOCKED = "BLOCKED",
   RETURNED = "RETURNED",
   RESCHEDULED = "RESCHEDULED",
 }
 
-export interface IStatusLog {
-  status: ParcelStatus;
-  timestamp: Date;
-  updatedAt: Date;
-  updatedBy: Types.ObjectId | Role;
-  location?: string;
-  note?: string;
-}
-
-export enum ParcelType {
-  ELECTRONICS = "ELECTRONICS",
+export enum Parcel_Type {
   DOCUMENT = "DOCUMENT",
   PACKAGE = "PACKAGE",
   FRAGILE = "FRAGILE",
   LIQUID = "LIQUID",
+  ELECTRONICS = "ELECTRONICS",
   FOOD = "FOOD",
-  OTHER = "OTHER",
 }
 
-export interface IParcelAddress {
+export interface Parcel_Address {
   name: string;
   phone: string;
   division: string;
+  district: string;
   city: string;
   area: string;
   detailAddress: string;
 }
 
-export interface IParcelFee {
+export interface Tracking_Event {
+  updaterId: string;
+  status: Parcel_Status;
+  locaton?: string;
+  note?: string;
+}
+
+export interface Parcel_Fee {
   baseRate: number;
   weightCharge: number;
   distanceCharge: number;
   totalFee: number;
 }
 
-export enum PaymentMethod {
+export enum Payment_Method {
   COD = "COD",
   PREPAID = "PREPAID",
 }
-
-export enum PaymentStatus {
+export enum Payment_Status {
   PENDING = "PENDING",
   PAID = "PAID",
   FAILED = "FAILED",
@@ -79,30 +75,35 @@ export enum PaymentStatus {
 export interface IParcel {
   _id?: Types.ObjectId;
   trackingId?: string;
-  senderId: Types.ObjectId | IUser;
-  receiverId?: Types.ObjectId | IUser;
-  parcelType: ParcelType;
+
+  senderId: Types.ObjectId;
+  // receiverId?: Types.ObjectId;
+
+  parcelType: Parcel_Type;
   weight: number;
-  parcelFee: IParcelFee;
   description?: string;
-  senderInfo: IParcelAddress;
-  receiverInfo: IParcelAddress;
+
+  senderInfo: Parcel_Address;
+  receiverInfo: Parcel_Address;
+
   actualPickupDate?: Date;
   actualDeliveryDate?: Date;
-  status: ParcelStatus;
-  statusLogs: IStatusLog[];
+
+  status?: Parcel_Status;
+  trackingEvents: Tracking_Event[];
+
   assignedDeliveryPartner?: Types.ObjectId;
-  paymentMethod: PaymentMethod;
-  paymentStatus?: PaymentStatus;
+
+  parcelFee: Parcel_Fee;
+  paymentMethod: Payment_Method;
+  paymentStatus?: Payment_Status;
   paymentId?: Types.ObjectId;
   codAmount?: number;
+
   cancellationReason?: string;
   cancelledBy?: Types.ObjectId;
-  blockReason?: string;
-  blockedBy?: Types.ObjectId;
-  isBlocked?: boolean;
-  isCancelled?: boolean;
-  isDelivered?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
+  image?: string[];
+
+  // blockReason?: string;
+  // blockedBy?: Types.ObjectId;
 }

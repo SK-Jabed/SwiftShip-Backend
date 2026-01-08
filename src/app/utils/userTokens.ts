@@ -1,13 +1,12 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { JwtPayload } from "jsonwebtoken";
-import httpStatus from "http-status-codes";
-import { IsActive } from "../modules/user/user.interface";
-import { generateToken, verifyToken } from "./jwt";
 import { envVars } from "../config/env";
+import { IsActive, IUser } from "../modules/user/user.interface";
+import { generateToken, verifyToken } from "./jwt";
+import httpStatus from "http-status-codes";
 import { User } from "../modules/user/user.model";
 import AppError from "../errorHelpers/AppError";
 
-export const createUserTokens = (user: any) => {
+export const createUserToken = (user: Partial<IUser>) => {
   const jwtPayload = {
     userId: user._id,
     email: user.email,
@@ -19,7 +18,6 @@ export const createUserTokens = (user: any) => {
     envVars.JWT_ACCESS_SECRET,
     envVars.JWT_ACCESS_EXPIRES
   );
-
   const refreshToken = generateToken(
     jwtPayload,
     envVars.JWT_REFRESH_SECRET,
@@ -41,18 +39,15 @@ export const createNewAccessTokenAndRefreshToken = async (
   ) as JwtPayload;
 
   const isUserExist = await User.findOne({ email: verifiedToken.email });
-
   if (!isUserExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "User not found, please register first"
+      "User not found , please register first"
     );
   }
-
   if (isUserExist.isActive === IsActive.BLOCKED) {
     throw new AppError(httpStatus.BAD_REQUEST, "User is blocked");
   }
-
   if (isUserExist.isDeleted) {
     throw new AppError(httpStatus.BAD_REQUEST, "User is deleted");
   }

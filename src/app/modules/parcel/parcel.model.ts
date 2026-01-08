@@ -1,16 +1,13 @@
 import { model, Schema } from "mongoose";
 import {
   IParcel,
-  IParcelAddress,
-  IParcelFee,
-  IStatusLog,
-  ParcelStatus,
-  ParcelType,
-  PaymentMethod,
-  PaymentStatus,
+  Parcel_Status,
+  Parcel_Type,
+  Payment_Method,
+  Payment_Status,
 } from "./parcel.interface";
 
-const ParcelAddressSchema = new Schema<IParcelAddress>(
+const ParcelAddressSchema = new Schema(
   {
     name: {
       type: String,
@@ -28,6 +25,11 @@ const ParcelAddressSchema = new Schema<IParcelAddress>(
       required: [true, "Division is required"],
       trim: true,
     },
+    district: {
+      type: String,
+      required: [true, "District is required......."],
+      trim: true,
+    },
     city: {
       type: String,
       required: [true, "City is required"],
@@ -42,32 +44,22 @@ const ParcelAddressSchema = new Schema<IParcelAddress>(
       type: String,
       required: [true, "Detail address is required"],
       trim: true,
-      maxlength: [500, "Detail Address cannot exceed 500 characters"],
+      maxlength: [500, "Address cannot exceed 500 characters"],
     },
   },
   { _id: false, versionKey: false }
 );
 
-const statusLogSchema = new Schema<IStatusLog>(
+const TrackingEventSchema = new Schema(
   {
+    updaterId: {
+      type: String,
+      required: [true, "updaterID is required"],
+    },
     status: {
       type: String,
-      enum: Object.values(ParcelStatus),
-      required: [true, "Parcel status is required"],
-    },
-    timestamp: {
-      type: Date,
-      default: Date.now,
-      required: [true, "Timestamp is required"],
-    },
-    updatedAt: {
-      type: Date,
-      required: [true, "Updated time is required"],
-    },
-    updatedBy: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      required: [true, "Moderator ID is required"],
+      enum: Object.values(Parcel_Status),
+      required: [true, "Status is required"],
     },
     location: {
       type: String,
@@ -76,10 +68,10 @@ const statusLogSchema = new Schema<IStatusLog>(
       type: String,
     },
   },
-  { versionKey: false, _id: false }
+  { _id: false, timestamps: true }
 );
 
-const ParcelFeeSchema = new Schema<IParcelFee>(
+const ParcelFeeSchema = new Schema(
   {
     baseRate: {
       type: Number,
@@ -111,19 +103,20 @@ export const parcelSchema = new Schema<IParcel>(
       type: String,
       default: null,
     },
+
     senderId: {
       type: Schema.Types.ObjectId,
       ref: "User",
       required: [true, "Sender ID is required"],
     },
-    receiverId: {
-      type: Schema.Types.ObjectId,
-      ref: "User",
-      default: null,
-    },
+    // receiverId: {
+    //     type: Schema.Types.ObjectId,
+    //     ref: 'User',
+    //     default: null
+    // },
     parcelType: {
       type: String,
-      enum: Object.values(ParcelType),
+      enum: Object.values(Parcel_Type),
       required: [true, "Parcel type is required"],
     },
     weight: {
@@ -132,12 +125,9 @@ export const parcelSchema = new Schema<IParcel>(
       min: [0.1, "Weight must be at least 0.1 kg"],
       max: [50, "Weight cannot exceed 50 kg"],
     },
-    parcelFee: {
-      type: ParcelFeeSchema,
-      required: [true, "Fee information is required"],
-    },
     description: {
       type: String,
+
       trim: true,
       maxlength: [500, "Description cannot exceed 500 characters"],
     },
@@ -145,46 +135,33 @@ export const parcelSchema = new Schema<IParcel>(
       type: ParcelAddressSchema,
       required: [true, "Sender information is required"],
     },
+
     receiverInfo: {
       type: ParcelAddressSchema,
       required: [true, "Receiver information is required"],
     },
-    actualPickupDate: {
-      type: Date,
-      default: Date.now,
-    },
-    actualDeliveryDate: {
-      type: Date,
-      default: Date.now,
-    },
     status: {
       type: String,
-      enum: Object.values(ParcelStatus),
-      default: ParcelStatus.REQUESTED,
+      enum: Object.values(Parcel_Status),
+      default: Parcel_Status.REQUESTED,
     },
-    statusLogs: {
-      type: [statusLogSchema],
+    trackingEvents: {
+      type: [TrackingEventSchema],
       default: [],
     },
-    assignedDeliveryPartner: {
-      type: Schema.Types.ObjectId,
-      ref: "Delivery",
-      default: null,
+    parcelFee: {
+      type: ParcelFeeSchema,
+      required: [true, "Fee information is required"],
     },
     paymentMethod: {
       type: String,
-      enum: Object.values(PaymentMethod),
+      enum: Object.values(Payment_Method),
       required: [true, "Payment method is required"],
     },
     paymentStatus: {
       type: String,
-      enum: Object.values(PaymentStatus),
-      default: PaymentStatus.PENDING,
-    },
-    paymentId: {
-      type: Schema.Types.ObjectId,
-      ref: "Payment",
-      default: null,
+      enum: Object.values(Payment_Status),
+      default: Payment_Status.PENDING,
     },
     cancellationReason: {
       type: String,
@@ -196,35 +173,19 @@ export const parcelSchema = new Schema<IParcel>(
       ref: "User",
       default: null,
     },
-    blockReason: {
-      type: String,
-      trim: true,
-      maxlength: [200, "Block reason cannot exceed 200 characters"],
-    },
-    blockedBy: {
+    assignedDeliveryPartner: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: "Delivery",
       default: null,
     },
-    isBlocked: {
-      type: Boolean,
-      default: false,
+    paymentId: {
+      type: Schema.Types.ObjectId,
+      ref: "Payment",
+      default: null,
     },
-    isCancelled: {
-      type: Boolean,
-      default: false,
-    },
-    isDelivered: {
-      type: Boolean,
-      default: false,
-    },
-    createdAt: {
-      type: Date,
-      default: Date.now,
-    },
-    updatedAt: {
-      type: Date,
-      default: Date.now,
+    image: {
+      type: [String],
+      default: [],
     },
   },
   {

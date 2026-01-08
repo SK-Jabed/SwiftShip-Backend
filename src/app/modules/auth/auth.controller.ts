@@ -2,47 +2,58 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import { AuthServices } from "./auth.service";
 import httpStatus from "http-status-codes";
+import { AuthServices } from "./auth.service";
 import AppError from "../../errorHelpers/AppError";
 import { setAuthCookie } from "../../utils/setCookie";
 import { JwtPayload } from "jsonwebtoken";
-import { createUserTokens } from "../../utils/userTokens";
-import { envVars } from "../../config/env";
 
 const credentialsLogin = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    //  console.log("req.body", req.body)
     const loginInfo = await AuthServices.credentialsLogin(req.body);
 
+    // res.cookie("refreshToken", loginInfo.refreshToken, {
+    //     httpOnly: true,
+    //     secure: false
+    // })
+
     setAuthCookie(res, loginInfo);
+    // res.cookie("accessToken", loginInfo.accessToken, {
+    //     httpOnly: true,
+    //     secure: false
+    // })
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "User Logged In Successfully",
+      message: "User Logged InSuccesssfully",
       data: loginInfo,
     });
   }
 );
-
-const getNewAccessToken = catchAsync(
+const getNewAuthToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
+    //  console.log("req.body", req.body)
     const refreshToken = req.cookies.refreshToken;
-
     if (!refreshToken) {
-      throw new AppError(httpStatus.BAD_REQUEST, "No refresh token found...");
+      throw new AppError(httpStatus.BAD_REQUEST, " No refresh token found....");
     }
-
-    const tokenInfo = await AuthServices.getNewAccessToken(
+    const tokenInfo = await AuthServices.getNewAuthToken(
       refreshToken as string
     );
+
+    // res.cookie("accessToken", result.accessToken,{
+    //     httpOnly: true,
+    //     secure: false
+    // })
 
     setAuthCookie(res, tokenInfo);
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "New Access Token Retrieved Successfully",
+      message: "New Access Token Retrieved Successsfully",
       data: tokenInfo,
     });
   }
@@ -52,20 +63,21 @@ const logout = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     res.clearCookie("accessToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true, // must be true in production (HTTPS)
+      sameSite: "none", // allow cross-origin
+      path: "/", // important to match the original cookie path
     });
-
     res.clearCookie("refreshToken", {
       httpOnly: true,
-      secure: false,
-      sameSite: "lax",
+      secure: true,
+      sameSite: "none",
+      path: "/",
     });
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "User Logged Out Successfully",
+      message: "User Logged Out Successsfully",
       data: null,
     });
   }
@@ -77,48 +89,20 @@ const resetPassword = catchAsync(
 
     const newPassword = req.body.newPassword;
     const oldPassword = req.body.oldPassword;
-
-    await AuthServices.resetPassword(
-      oldPassword,
-      newPassword,
-      decodedToken as JwtPayload
-    );
+    await AuthServices.resetPassword(oldPassword, newPassword, decodedToken);
 
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.OK,
-      message: "Password reset Successfully",
+      message: "Password changed  Successsfully",
       data: null,
     });
   }
 );
 
-const googleCallbackController = catchAsync(
-  async (req: Request, res: Response, next: NextFunction) => {
-    let redirectTo = (req.query?.state as string) || "";
-
-    if (redirectTo.startsWith("/")) {
-      redirectTo = redirectTo.slice(1);
-    }
-
-    const user = req.user;
-
-    if (!user) {
-      throw new AppError(httpStatus.NOT_FOUND, "User Not Found...");
-    }
-
-    const tokenInfo = createUserTokens(user);
-
-    setAuthCookie(res, tokenInfo);
-
-    res.redirect(`${envVars.FRONTEND_URL}${redirectTo}`);
-  }
-);
-
-export const AuthControllers = {
+export const AuthController = {
   credentialsLogin,
-  getNewAccessToken,
+  getNewAuthToken,
   logout,
   resetPassword,
-  googleCallbackController,
 };

@@ -2,7 +2,7 @@ import z from "zod";
 import { IsActive, Role } from "./user.interface";
 
 const AddressSchema = z.object({
-  district: z.string().min(1, { message: "Division is required" }).optional(),
+  division: z.string().min(1, { message: "Division is required" }).optional(),
   city: z.string().min(1, { message: "City is required" }).optional(),
   area: z.string().min(1, { message: "Area is required" }).optional(),
   roadNo: z.string().optional(),
@@ -10,15 +10,8 @@ const AddressSchema = z.object({
 });
 
 export const createUserZodSchema = z.object({
-  name: z
-    .string({ message: "Name must be string" })
-    .min(2, { message: "Name must be at least 2 characters long." })
-    .max(50, { message: "Name cannot exceed 50 characters." }),
-  email: z
-    .string({ message: "Email must be string" })
-    .email({ message: "Invalid email address format." })
-    .min(5, { message: "Email must be at least 5 characters long." })
-    .max(100, { message: "Email cannot exceed 100 characters." }),
+  name: z.string().min(2).max(50),
+  email: z.email(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
@@ -34,26 +27,20 @@ export const createUserZodSchema = z.object({
     .refine((val) => /[@$!%*?&]/.test(val), {
       message: "Password must include at least one special character",
     }),
-  phone: z
-    .string()
-    .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
-      message:
-        "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
-    })
-    .optional(),
+  phone: z.string().regex(/^(?:\+88|88)?01[3-9]\d{8}$/, {
+    message: "Invalid Bangladeshi phone number",
+  }),
+
   picture: z.string().optional(),
   address: AddressSchema.optional(),
+  role: z.enum(Object.values(Role)),
   isVerified: z.boolean().optional().default(false),
   isDeleted: z.boolean().optional().default(false),
   isActive: z.enum(Object.values(IsActive)).optional(),
 });
 
 export const updateUserZodSchema = z.object({
-  name: z
-    .string()
-    .min(2, { message: "Name must be at least 2 characters long." })
-    .max(50, { message: "Name cannot exceed 50 characters." })
-    .optional(),
+  name: z.string().min(2).max(50).optional(),
   password: z
     .string()
     .min(8, { message: "Password must be at least 8 characters long" })
@@ -72,11 +59,11 @@ export const updateUserZodSchema = z.object({
     .optional(),
   phone: z
     .string()
-    .regex(/^(?:\+8801\d{9}|01\d{9})$/, {
-      message:
-        "Phone number must be valid for Bangladesh. Format: +8801XXXXXXXXX or 01XXXXXXXXX",
+    .regex(/^(?:\+88|88)?01[3-9]\d{8}$/, {
+      message: "Invalid Bangladeshi phone number",
     })
     .optional(),
+
   picture: z.string().optional(),
   address: AddressSchema.optional(),
   role: z.enum(Object.values(Role)).optional(),

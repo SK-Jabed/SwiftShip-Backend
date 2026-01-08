@@ -1,22 +1,20 @@
 /* eslint-disable @typescript-eslint/no-non-null-assertion */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 import AppError from "../../errorHelpers/AppError";
 import { IUser } from "../user/user.interface";
-import httpStatus from "http-status-codes";
 import { User } from "../user/user.model";
-import { envVars } from "../../config/env";
+import httpStatus from "http-status-codes";
+import bcryptjs from "bcryptjs";
 import {
   createNewAccessTokenAndRefreshToken,
-  createUserTokens,
+  createUserToken,
 } from "../../utils/userTokens";
-import bcryptjs from "bcryptjs";
+// import { generateToken, verifyToken } from "../../utils/jwt"
+import { envVars } from "../../config/env";
 import { JwtPayload } from "jsonwebtoken";
 
 const credentialsLogin = async (payload: Partial<IUser>) => {
   const { email, password } = payload;
-
   const isUserExist = await User.findOne({ email });
-
   if (!isUserExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -32,22 +30,29 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
   if (!isPasswordMatched) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
-      "Password not matched, please check your password"
+      "Password not matched , please check your password"
+    );
+  }
+  if (!isUserExist.isVerified) {
+    // console.log(isUserExist.isVerified)
+    throw new AppError(
+      httpStatus.BAD_REQUEST,
+      "Not verified , please verify first"
     );
   }
 
-  const userToken = createUserTokens(isUserExist);
+  const userToken = createUserToken(isUserExist);
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { password: pass, ...rest } = isUserExist.toObject();
 
   return {
     accessToken: userToken.accessToken,
     refreshToken: userToken.refreshToken,
     user: rest,
-    email: isUserExist.email,
   };
 };
 
-const getNewAccessToken = async (refreshToken: string) => {
+const getNewAuthToken = async (refreshToken: string) => {
   const newAccessToken = await createNewAccessTokenAndRefreshToken(
     refreshToken
   );
@@ -68,9 +73,8 @@ const resetPassword = async (
     oldPassword,
     user!.password as string
   );
-
   if (!isOldPasswordMatched) {
-    throw new AppError(httpStatus.BAD_REQUEST, "Old password doesn't match");
+    throw new AppError(httpStatus.BAD_REQUEST, "Old password doesn't matched");
   }
 
   user!.password = await bcryptjs.hash(
@@ -83,6 +87,6 @@ const resetPassword = async (
 
 export const AuthServices = {
   credentialsLogin,
-  getNewAccessToken,
+  getNewAuthToken,
   resetPassword,
 };
