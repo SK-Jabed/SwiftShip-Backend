@@ -154,7 +154,7 @@ const getMe = async (userr: IUser) => {
   if (!user) {
     throw new AppError(httpStatus.BAD_REQUEST, "User dontt Exist");
   }
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   
   // const {password, ...rest} = sleecteduser
 
   return {
