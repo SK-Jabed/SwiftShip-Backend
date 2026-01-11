@@ -113,6 +113,7 @@ const getMe = catchAsync(
     });
   }
 );
+
 const blockUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.id;
@@ -128,6 +129,7 @@ const blockUser = catchAsync(
     });
   }
 );
+
 const unblockUser = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const userId = req.params.id;
