@@ -76,6 +76,7 @@ const getAllUser = catchAsync(
     });
   }
 );
+
 const getAllUserByRole = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // const role = req.query.role || ""
@@ -97,6 +98,7 @@ const getAllUserByRole = catchAsync(
     });
   }
 );
+
 const getMe = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const user = req.user as IUser;
