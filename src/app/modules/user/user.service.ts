@@ -110,6 +110,7 @@ const getAllUser = async (query: Record<string, string>, role: string) => {
 
   // console.log(roleQuery)
   // console.log("role", query)
+
   if (role !== Role.SUPER_ADMIN) {
     throw new AppError(httpStatus.FORBIDDEN, "UnAuthorized Access");
   }
@@ -117,10 +118,12 @@ const getAllUser = async (query: Record<string, string>, role: string) => {
   const queryBuilder = new QueryBuilder(User.find({}), query);
 
   const allUsers = await queryBuilder.filter().sort().fields().paginate();
+
   const [users, meta] = await Promise.all([
     allUsers.build(),
     queryBuilder.getMeta(),
   ]);
+
   return {
     users,
     meta,
@@ -138,6 +141,7 @@ const getAllUserByRole = async (role: string) => {
   const users = await User.find(query);
 
   const total = await User.countDocuments();
+
   return {
     users,
     total,
@@ -295,6 +299,7 @@ const unblockUser = async (userId: string, adminId: string) => {
     await session.endSession();
   }
 };
+
 export const userServices = {
   createUser,
   getAllUser,
