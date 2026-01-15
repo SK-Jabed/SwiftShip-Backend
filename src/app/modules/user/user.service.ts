@@ -232,6 +232,9 @@ const blockUser = async (userId: string, user: IUserToken) => {
   }
 };
 
+
+
+
 const unblockUser = async (userId: string, adminId: string) => {
   if (!userId || !adminId) {
     throw new AppError(400, "User ID, reason, and admin ID are required");
