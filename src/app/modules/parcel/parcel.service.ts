@@ -34,6 +34,7 @@ const createParcel = async (payload: Partial<IParcel>) => {
       "Missing required fields: senderId and parcelFee are required"
     );
   }
+  
   const trackingId: string = generatetrackingId();
 
   const session = await Parcel.startSession();
@@ -55,6 +56,7 @@ const createParcel = async (payload: Partial<IParcel>) => {
     if (!parcel) {
       throw new AppError(404, "Parcel is not created");
     }
+
     if (!user) {
       throw new AppError(404, "User is not found");
     }
