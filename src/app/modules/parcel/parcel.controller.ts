@@ -3,10 +3,10 @@
 import { NextFunction, Request, Response } from "express";
 import { catchAsync } from "../../utils/catchAsync";
 import { sendResponse } from "../../utils/sendResponse";
-import httpStatus from "http-status-codes";
 import { ParcelServices } from "./parcel.service";
 import { IParcel, ReturnParcelPayload } from "./parcel.interface";
 import { IUserToken } from "../user/user.interface";
+import httpStatus from "http-status-codes";
 
 const createParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
@@ -18,11 +18,15 @@ const createParcel = catchAsync(
       ...req.body,
       image: (req.file as Express.Multer.File).path,
     };
+
     // console.log("payload .............",{
     //     payload
     // })
+
     const parcel = await ParcelServices.createParcel(payload);
+
     console.log(parcel);
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -32,6 +36,7 @@ const createParcel = catchAsync(
     });
   }
 );
+
 const getAllParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
@@ -49,6 +54,7 @@ const getAllParcel = catchAsync(
     });
   }
 );
+
 const getSingleParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const trackingId = req.query.trackingId;
@@ -63,6 +69,7 @@ const getSingleParcelStatus = catchAsync(
     });
   }
 );
+
 const updateParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.parcelId;
@@ -81,6 +88,7 @@ const updateParcel = catchAsync(
     });
   }
 );
+
 const assignParcelToDeliveryPerson = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     // const parcelId = req.params.parcelId
@@ -100,6 +108,7 @@ const assignParcelToDeliveryPerson = catchAsync(
     });
   }
 );
+
 const getAllParcelById = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
@@ -115,6 +124,7 @@ const getAllParcelById = catchAsync(
     });
   }
 );
+
 const incomingParcelForReceiver = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const phone = req.query.phone as string;
@@ -134,6 +144,7 @@ const incomingParcelForReceiver = catchAsync(
     });
   }
 );
+
 const updateParcelStatus = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const id = req.params.id;
@@ -149,6 +160,7 @@ const updateParcelStatus = catchAsync(
     });
   }
 );
+
 const getIncomingParcels = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const receiversPhoneNumber = req.query.phone;
@@ -166,6 +178,7 @@ const getIncomingParcels = catchAsync(
     });
   }
 );
+
 const confirmDelivery = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { phone, trackingId } = req.query;
@@ -183,6 +196,7 @@ const confirmDelivery = catchAsync(
     });
   }
 );
+
 const collectCODPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { deliveryPersonId, trackingId } = req.query;
@@ -200,6 +214,7 @@ const collectCODPayment = catchAsync(
     });
   }
 );
+
 const blockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
@@ -223,6 +238,7 @@ const blockParcel = catchAsync(
     });
   }
 );
+
 const unblockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
@@ -241,6 +257,7 @@ const unblockParcel = catchAsync(
     });
   }
 );
+
 const returnParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
@@ -260,6 +277,7 @@ const returnParcel = catchAsync(
     });
   }
 );
+
 const cancelParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId, updaterId } = req.body;
@@ -276,6 +294,7 @@ const cancelParcel = catchAsync(
     });
   }
 );
+
 const trackParcelByTrackingIdPublic = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const trackingId = req.query.trackingId;
