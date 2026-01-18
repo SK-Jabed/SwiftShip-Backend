@@ -15,7 +15,7 @@ import { JwtPayload } from "jsonwebtoken";
 const credentialsLogin = async (payload: Partial<IUser>) => {
   const { email, password } = payload;
   const isUserExist = await User.findOne({ email });
-  
+
   if (!isUserExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -75,6 +75,7 @@ const resetPassword = async (
     oldPassword,
     user!.password as string
   );
+
   if (!isOldPasswordMatched) {
     throw new AppError(httpStatus.BAD_REQUEST, "Old password doesn't matched");
   }

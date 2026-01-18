@@ -36,9 +36,11 @@ const getNewAuthToken = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     //  console.log("req.body", req.body)
     const refreshToken = req.cookies.refreshToken;
+    
     if (!refreshToken) {
       throw new AppError(httpStatus.BAD_REQUEST, " No refresh token found....");
     }
+
     const tokenInfo = await AuthServices.getNewAuthToken(
       refreshToken as string
     );
@@ -67,6 +69,7 @@ const logout = catchAsync(
       sameSite: "none", // allow cross-origin
       path: "/", // important to match the original cookie path
     });
+
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: true,
@@ -99,9 +102,6 @@ const resetPassword = catchAsync(
     });
   }
 );
-
-
-
 
 export const AuthController = {
   credentialsLogin,
