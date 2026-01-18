@@ -15,6 +15,7 @@ import { JwtPayload } from "jsonwebtoken";
 const credentialsLogin = async (payload: Partial<IUser>) => {
   const { email, password } = payload;
   const isUserExist = await User.findOne({ email });
+  
   if (!isUserExist) {
     throw new AppError(
       httpStatus.BAD_REQUEST,
@@ -33,6 +34,7 @@ const credentialsLogin = async (payload: Partial<IUser>) => {
       "Password not matched , please check your password"
     );
   }
+
   if (!isUserExist.isVerified) {
     // console.log(isUserExist.isVerified)
     throw new AppError(
