@@ -1,7 +1,6 @@
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { NextFunction, Request, Response, Router } from "express";
 import { userController } from "./user.controller";
-
 import {
   blockZodSchema,
   createUserZodSchema,

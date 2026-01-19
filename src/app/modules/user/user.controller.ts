@@ -36,6 +36,7 @@ const updateUser = catchAsync(
     // console.log(token, verifiedToken)
     const verifiedToken = req.user;
     const payload = req.body;
+    
     const updatedUser = await userServices.UpdateUser(
       userId,
       payload,
