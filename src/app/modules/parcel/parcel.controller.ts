@@ -225,7 +225,9 @@ const blockParcel = catchAsync(
       parcelId as string,
       admin
     );
+
     console.log("updateParcel", updatedParcel);
+    
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -249,6 +251,7 @@ const unblockParcel = catchAsync(
       parcelId as string,
       adminId as string
     );
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -268,6 +271,7 @@ const returnParcel = catchAsync(
       parcelId as string,
       returnData
     );
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
