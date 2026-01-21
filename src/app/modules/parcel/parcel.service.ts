@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
-
 import AppError from "../../errorHelpers/AppError";
 import { generatetrackingId } from "../../utils/generateTrackingId";
 import { getTransactionId } from "../../utils/getTransactionId";
@@ -34,7 +33,7 @@ const createParcel = async (payload: Partial<IParcel>) => {
       "Missing required fields: senderId and parcelFee are required"
     );
   }
-  
+
   const trackingId: string = generatetrackingId();
 
   const session = await Parcel.startSession();

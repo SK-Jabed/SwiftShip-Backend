@@ -188,6 +188,7 @@ const confirmDelivery = catchAsync(
       trackingId as string,
       phone as string
     );
+    
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -206,6 +207,7 @@ const collectCODPayment = catchAsync(
       trackingId as string,
       deliveryPersonId as string
     );
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -227,7 +229,7 @@ const blockParcel = catchAsync(
     );
 
     console.log("updateParcel", updatedParcel);
-    
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
