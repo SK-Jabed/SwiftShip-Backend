@@ -1,6 +1,5 @@
 /* eslint-disable no-console */
 /* eslint-disable @typescript-eslint/no-unused-vars */
- 
 import { NextFunction, Request, Response } from "express";
 import httpStatus from "http-status-codes";
 import { userServices } from "./user.service";
@@ -36,7 +35,7 @@ const updateUser = catchAsync(
     // console.log(token, verifiedToken)
     const verifiedToken = req.user;
     const payload = req.body;
-    
+
     const updatedUser = await userServices.UpdateUser(
       userId,
       payload,

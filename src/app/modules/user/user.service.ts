@@ -41,12 +41,14 @@ const createUser = async (payload: Partial<IUser>) => {
     provider: "credentials",
     providerId: email as string,
   };
+
   const user = await User.create({
     email,
     password: hashedPassword,
     auths: [authProvider],
     ...rest,
   });
+
   return user;
   // return {}
 };
@@ -177,6 +179,7 @@ const blockUser = async (userId: string, user: IUserToken) => {
 
   // Get user to block
   const userToBlock = await User.findById(userId);
+  
   if (!userToBlock) {
     throw new AppError(404, "User not found");
   }
