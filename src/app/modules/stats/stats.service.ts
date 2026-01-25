@@ -205,10 +205,7 @@ const getPaymentStats = async () => {
     );
  */
 
-
-
 export const StatsService = {
-  
     getUserStats,
     getParcelStats,
     getPaymentStats

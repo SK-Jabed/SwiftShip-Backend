@@ -13,6 +13,7 @@ const getUserStats = catchAsync(async (req: Request, res: Response) => {
         data: stats,
     });
 });
+
 const getParcelStats = catchAsync(async (req: Request, res: Response) => {
     const stats = await StatsService.getParcelStats();
     sendResponse(res, {
@@ -33,8 +34,6 @@ const getPaymentStats = catchAsync(async (req: Request, res: Response) => {
     });
 });
 
-
-
 // const getTourStats = catchAsync(async (req: Request, res: Response) => {
 //     const stats = await StatsService.getTourStats();
 //     sendResponse(res, {
@@ -46,7 +45,6 @@ const getPaymentStats = catchAsync(async (req: Request, res: Response) => {
 // });
 
 export const StatsController = {
-
     getUserStats,
     getParcelStats,
     getPaymentStats
