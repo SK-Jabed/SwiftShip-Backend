@@ -125,7 +125,6 @@ const getParcelStats = async () => {
 };
 
 const getPaymentStats = async () => {
-
     const totalPaymentPromise = Payment.countDocuments();
 
     const totalPaymentByStatusPromise = Payment.aggregate([
@@ -171,8 +170,6 @@ const getPaymentStats = async () => {
         }
     ])
 
-
-
     const [totalPayment, totalPaymentByStatus, totalRevenue, avgPaymentAmount, paymentGatewayData] = await Promise.all([
         totalPaymentPromise,
         totalPaymentByStatusPromise,
@@ -183,7 +180,6 @@ const getPaymentStats = async () => {
     ])
     return { totalPayment, totalPaymentByStatus, totalRevenue, avgPaymentAmount, paymentGatewayData }
 }
-
 
 /**
  * await Tour.updateMany(
