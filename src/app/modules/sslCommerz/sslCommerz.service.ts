@@ -6,7 +6,6 @@ import { Payment } from "../payment/payment.model";
 import { ISSLCommerz } from "./sslCommerz.interface";
 import axios from "axios"
 const sslPaymentInit = async (payload: ISSLCommerz) => {
-
     try {
         const data = {
             store_id: envVars.SSL.SSL_STORE_ID,
@@ -49,9 +48,6 @@ const sslPaymentInit = async (payload: ISSLCommerz) => {
                 "Content-Type": "application/x-www-form-urlencoded"
             }
         })
-
-
-
         return response.data
     } catch (error: any) {
         console.log(error)
