@@ -33,7 +33,6 @@ const getUserStats = async () => {
         }
     ])
 
-
     const [totalUsers, totalActiveUsers, totalInActiveUsers, totalBlockedUsers, newUsersInLast7Days, newUsersInLast30Days, usersByRole] = await Promise.all([
         totalUsersPromise,
         totalActiveUsersPromise,
@@ -53,7 +52,6 @@ const getUserStats = async () => {
         usersByRole
     }
 }
-
 
 const getParcelStats = async () => {
   const totalParcelsPromise = Parcel.countDocuments();
