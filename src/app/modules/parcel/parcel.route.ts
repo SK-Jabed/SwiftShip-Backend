@@ -21,87 +21,87 @@ router.post(
   checkAuth(Role.SENDER),
   multerUpload.single("file"),
   validateRequest(parcelZodSchema),
-  ParcelController.createParcel
+  ParcelController.createParcel,
 );
 router.get(
   "/all-parcel",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  ParcelController.getAllParcel
+  ParcelController.getAllParcel,
 );
 router.get(
   "/status",
   checkAuth(...Object.values(Role)),
-  ParcelController.getSingleParcelStatus
+  ParcelController.getSingleParcelStatus,
 );
 router.patch(
   "/assign-delivery",
   validateRequest(assignDeliverySchema),
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  ParcelController.assignParcelToDeliveryPerson
+  ParcelController.assignParcelToDeliveryPerson,
 );
 router.get(
   "/all-parcel/:id",
   checkAuth(...Object.values(Role)),
-  ParcelController.getAllParcelById
+  ParcelController.getAllParcelById,
 );
 router.get(
   "/incoming-parcel",
   checkAuth(Role.RECEIVER),
-  ParcelController.incomingParcelForReceiver
+  ParcelController.incomingParcelForReceiver,
 );
 router.post(
   "/update/:parcelId",
   validateRequest(parcelUpdateZodSchema),
   checkAuth(Role.SENDER),
-  ParcelController.updateParcel
+  ParcelController.updateParcel,
 );
 router.patch(
   "/:id/update-status",
   validateRequest(trackingEventZodSchema),
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN, Role.DELIVERY_PERSON, Role.SENDER),
-  ParcelController.updateParcelStatus
+  ParcelController.updateParcelStatus,
 );
 router.get(
   "/receiver-incoming-parcel",
   checkAuth(Role.RECEIVER),
-  ParcelController.getIncomingParcels
+  ParcelController.getIncomingParcels,
 );
 router.patch(
   "/confirm-delivery",
   checkAuth(Role.RECEIVER),
-  ParcelController.confirmDelivery
+  ParcelController.confirmDelivery,
 );
 router.patch(
   "/collect-cod",
   checkAuth(Role.DELIVERY_PERSON),
-  ParcelController.collectCODPayment
+  ParcelController.collectCODPayment,
 );
 router.patch(
   "/:id/block-parcel",
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  ParcelController.blockParcel
+  ParcelController.blockParcel,
 );
 router.patch(
   "/:id/unblock-parcel",
   validateRequest(blockZodSchema),
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN),
-  ParcelController.unblockParcel
+  ParcelController.unblockParcel,
 );
 router.post(
   "/:id/return-parcel",
   validateRequest(returnParcelZodSchema),
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN, Role.SENDER),
-  ParcelController.returnParcel
+  ParcelController.returnParcel,
 );
 router.post(
   "/cancel-parcel",
   validateRequest(cancelParcelZodSchema),
   checkAuth(Role.ADMIN, Role.SUPER_ADMIN, Role.SENDER),
-  ParcelController.cancelParcel
+  ParcelController.cancelParcel,
 );
 router.get(
   "/track-public-status",
-  ParcelController.trackParcelByTrackingIdPublic
+  ParcelController.trackParcelByTrackingIdPublic,
 );
 
 export const ParcelRoutes = router;

@@ -34,7 +34,7 @@ const createParcel = catchAsync(
       // data: {}
       data: parcel,
     });
-  }
+  },
 );
 
 const getAllParcel = catchAsync(
@@ -44,7 +44,7 @@ const getAllParcel = catchAsync(
 
     const allParcel = await ParcelServices.getAllParcel(
       query as Record<string, string>,
-      user
+      user,
     );
     sendResponse(res, {
       success: true,
@@ -52,7 +52,7 @@ const getAllParcel = catchAsync(
       message: "All Parcel fetched successfully",
       data: allParcel,
     });
-  }
+  },
 );
 
 const getSingleParcelStatus = catchAsync(
@@ -67,7 +67,7 @@ const getSingleParcelStatus = catchAsync(
       message: "Parcel retrieved successfully",
       data: singleParcelTrackingEvent,
     });
-  }
+  },
 );
 
 const updateParcel = catchAsync(
@@ -78,7 +78,7 @@ const updateParcel = catchAsync(
 
     const updatedParcel = await ParcelServices.updateParcel(
       parcelId as string,
-      updateData
+      updateData,
     );
     sendResponse(res, {
       success: true,
@@ -86,7 +86,7 @@ const updateParcel = catchAsync(
       message: "Parcel updated successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const assignParcelToDeliveryPerson = catchAsync(
@@ -98,7 +98,7 @@ const assignParcelToDeliveryPerson = catchAsync(
     const updatedParcel = await ParcelServices.assignParcelToDeliveryPerson(
       parcelId,
       deliveryPersonId,
-      updaterId
+      updaterId,
     );
     sendResponse(res, {
       success: true,
@@ -106,7 +106,7 @@ const assignParcelToDeliveryPerson = catchAsync(
       message: "Parcel assigned successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const getAllParcelById = catchAsync(
@@ -122,7 +122,7 @@ const getAllParcelById = catchAsync(
       message: "Parcel retireved  successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const incomingParcelForReceiver = catchAsync(
@@ -133,7 +133,7 @@ const incomingParcelForReceiver = catchAsync(
     console.log(phone, user);
     const incomngParcel = await ParcelServices.incomingParcelForReceiver(
       phone,
-      user
+      user,
     );
     console.log(incomngParcel);
     sendResponse(res, {
@@ -142,7 +142,7 @@ const incomingParcelForReceiver = catchAsync(
       message: "Parcel retireved  successfully",
       data: incomngParcel,
     });
-  }
+  },
 );
 
 const updateParcelStatus = catchAsync(
@@ -158,7 +158,7 @@ const updateParcelStatus = catchAsync(
       message: "Parcel status updated successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const getIncomingParcels = catchAsync(
@@ -168,7 +168,7 @@ const getIncomingParcels = catchAsync(
     // console.log(req.user)
 
     const updatedParcel = await ParcelServices.getIncomingParcels(
-      receiversPhoneNumber as string
+      receiversPhoneNumber as string,
     );
     sendResponse(res, {
       success: true,
@@ -176,7 +176,7 @@ const getIncomingParcels = catchAsync(
       message: "Parcel status updated successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const confirmDelivery = catchAsync(
@@ -186,16 +186,16 @@ const confirmDelivery = catchAsync(
     // console.log(phone, trackingId )
     const updatedParcel = await ParcelServices.confirmDelivery(
       trackingId as string,
-      phone as string
+      phone as string,
     );
-    
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
       message: "Parcel status updated successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const collectCODPayment = catchAsync(
@@ -205,7 +205,7 @@ const collectCODPayment = catchAsync(
 
     const updatedParcel = await ParcelServices.collectCODPayment(
       trackingId as string,
-      deliveryPersonId as string
+      deliveryPersonId as string,
     );
 
     sendResponse(res, {
@@ -214,7 +214,7 @@ const collectCODPayment = catchAsync(
       message: "Parcel status updated successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const blockParcel = catchAsync(
@@ -225,7 +225,7 @@ const blockParcel = catchAsync(
 
     const updatedParcel = await ParcelServices.blockParcel(
       parcelId as string,
-      admin
+      admin,
     );
 
     console.log("updateParcel", updatedParcel);
@@ -240,7 +240,7 @@ const blockParcel = catchAsync(
       // message:  "Parcel Blocked successfullyParcel UnBlocked successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const unblockParcel = catchAsync(
@@ -251,7 +251,7 @@ const unblockParcel = catchAsync(
 
     const updatedParcel = await ParcelServices.unblockParcel(
       parcelId as string,
-      adminId as string
+      adminId as string,
     );
 
     sendResponse(res, {
@@ -260,7 +260,7 @@ const unblockParcel = catchAsync(
       message: "Parcel UnBlocked successfully",
       data: updatedParcel,
     });
-  }
+  },
 );
 
 const returnParcel = catchAsync(
@@ -271,7 +271,7 @@ const returnParcel = catchAsync(
 
     const updatedParcel = await ParcelServices.returnParcel(
       parcelId as string,
-      returnData
+      returnData,
     );
 
     sendResponse(res, {
@@ -281,7 +281,7 @@ const returnParcel = catchAsync(
       // data: updatedParcel
       data: {},
     });
-  }
+  },
 );
 
 const cancelParcel = catchAsync(
@@ -298,7 +298,7 @@ const cancelParcel = catchAsync(
       // data: updatedParcel
       data: {},
     });
-  }
+  },
 );
 
 const trackParcelByTrackingIdPublic = catchAsync(
@@ -313,7 +313,7 @@ const trackParcelByTrackingIdPublic = catchAsync(
       message: "Parcel Status Retieved successfully",
       data: trackParcelStatus,
     });
-  }
+  },
 );
 
 export const ParcelController = {
