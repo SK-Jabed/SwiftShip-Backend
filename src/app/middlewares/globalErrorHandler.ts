@@ -16,10 +16,11 @@ export const globalErrorhandlers = (
   res: Response,
   next: NextFunction
 ) => {
-  // console.log(err)
   let statusCode = 500;
   let message = "Something went wrong!!";
+
   let errorSources: TErorSources[] = [];
+
   if (err.code == 11000) {
     const simplyFiedError = handleDupliacteError(err);
     statusCode = simplyFiedError.statusCode;
@@ -45,6 +46,7 @@ export const globalErrorhandlers = (
     statusCode = 500;
     message = err.message;
   }
+  
   res.status(500).json({
     success: false,
     message,
