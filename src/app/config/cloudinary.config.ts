@@ -10,6 +10,9 @@ cloudinary.config({
   api_secret: envVars.CLOUDINARY.CLOUDINARY_API_SECRET,
 });
 
+
+
+
 export const deleteImageFromCloudinary = async (url: string) => {
   try {
     const regex = /\/v\d+\/(.*?)\.(jpg|png|jpeg|gif|webp)/i;
