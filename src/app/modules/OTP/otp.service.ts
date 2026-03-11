@@ -7,7 +7,7 @@ import { User } from "../user/user.model";
 const OTP_EXPIRATION = 2 * 60;
 
 const generateOTP = () => {
-  // 6 digit OTP
+  // 6 Digit OTP
   const otp = crypto.randomInt(10 ** 5, 10 ** 6).toString();
   return otp;
 };
