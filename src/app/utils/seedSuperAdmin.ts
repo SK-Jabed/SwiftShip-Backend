@@ -23,6 +23,9 @@ export const seedSuperAdmin = async () => {
       provider: "credentials",
       providerId: envVars.SUPER_ADMIN_EMAIL,
     };
+
+
+    
     const payload: IUser = {
       name: "Super Duper Admin",
       email: envVars.SUPER_ADMIN_EMAIL,
