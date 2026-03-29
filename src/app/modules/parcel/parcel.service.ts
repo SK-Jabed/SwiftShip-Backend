@@ -126,10 +126,13 @@ const getAllParcel = async (
   if (!user) {
     throw new AppError(404, "User Not found, so parcel can't be accessed");
   }
+
   if (user.role !== Role.ADMIN && user.role !== Role.SUPER_ADMIN) {
     throw new AppError(404, "Only admins can get all the data");
   }
+
   console.log(user);
+
   const queryBuilder = new QueryBuilder(Parcel.find({}), query);
 
   const allParcel = await queryBuilder
@@ -152,6 +155,7 @@ const getSingleParcelStatus = async (trackingId: string) => {
   if (!trackingId) {
     throw new AppError(400, "Invalid tracking ID provided");
   }
+  
   const selectedParcelStatus = await Parcel.findOne({ trackingId: trackingId });
   if (!selectedParcelStatus) {
     throw new AppError(404, "Parcel not found with the provided tracking ID");
