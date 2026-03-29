@@ -155,8 +155,9 @@ const getSingleParcelStatus = async (trackingId: string) => {
   if (!trackingId) {
     throw new AppError(400, "Invalid tracking ID provided");
   }
-  
+
   const selectedParcelStatus = await Parcel.findOne({ trackingId: trackingId });
+
   if (!selectedParcelStatus) {
     throw new AppError(404, "Parcel not found with the provided tracking ID");
   }
@@ -170,6 +171,7 @@ const updateParcel = async (parcelId: string, payload: Partial<IParcel>) => {
   }
 
   const existingParcel = await Parcel.findById(parcelId);
+
   if (!existingParcel) {
     throw new AppError(404, "Parcel not found");
   }
@@ -208,6 +210,7 @@ const assignParcelToDeliveryPerson = async (
   const isDeliverPersonExist = await User.findById(deliveryPersonId);
   const isPercelExist = await Parcel.findById(parcelId);
   const isUpdaterExist = await User.findById(updaterId);
+
   if (!isDeliverPersonExist) {
     throw new AppError(404, "Delivery person not found");
   }
@@ -256,6 +259,7 @@ const assignParcelToDeliveryPerson = async (
     status: Parcel_Status.APPROVED,
     note: "Parcel approved and assigned to delivery partner",
   };
+  
   const updateDeliveryParson = {
     assignedDeliveryPartner: deliveryPersonId,
     status: updatedTrackinEvents.status,
