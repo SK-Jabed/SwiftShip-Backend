@@ -259,7 +259,7 @@ const assignParcelToDeliveryPerson = async (
     status: Parcel_Status.APPROVED,
     note: "Parcel approved and assigned to delivery partner",
   };
-  
+
   const updateDeliveryParson = {
     assignedDeliveryPartner: deliveryPersonId,
     status: updatedTrackinEvents.status,
@@ -289,6 +289,7 @@ const getAllParcelById = async (id: string, user: any) => {
   if (user.role == Role.DELIVERY_PERSON) {
     query = { assignedDeliveryPartner: id };
   }
+
   if (user.role == Role.SENDER) {
     query = { senderId: id };
   }
@@ -303,6 +304,7 @@ const getAllParcelById = async (id: string, user: any) => {
 
   return updatedData;
 };
+
 const incomingParcelForReceiver = async (phone: string, user: any) => {
   const isUserExist = await User.findById(user.userId);
   console.log(phone);
