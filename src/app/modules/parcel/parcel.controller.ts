@@ -170,6 +170,7 @@ const getIncomingParcels = catchAsync(
     const updatedParcel = await ParcelServices.getIncomingParcels(
       receiversPhoneNumber as string,
     );
+    
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -291,6 +292,7 @@ const cancelParcel = catchAsync(
     console.log(parcelId, updaterId);
 
     await ParcelServices.cancelParcel(parcelId, updaterId);
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
