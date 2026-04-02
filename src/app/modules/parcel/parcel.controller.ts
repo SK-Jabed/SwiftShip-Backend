@@ -170,7 +170,7 @@ const getIncomingParcels = catchAsync(
     const updatedParcel = await ParcelServices.getIncomingParcels(
       receiversPhoneNumber as string,
     );
-    
+
     sendResponse(res, {
       success: true,
       statusCode: httpStatus.CREATED,
@@ -222,7 +222,8 @@ const blockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
     const admin = req.user as IUserToken;
-    console.log(parcelId, admin);
+
+    // console.log(parcelId, admin);
 
     const updatedParcel = await ParcelServices.blockParcel(
       parcelId as string,
@@ -248,6 +249,7 @@ const unblockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
     const adminId = req.body.adminId;
+    
     // console.log(parcelId, adminId)
 
     const updatedParcel = await ParcelServices.unblockParcel(
