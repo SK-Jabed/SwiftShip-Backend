@@ -249,7 +249,7 @@ const unblockParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
     const adminId = req.body.adminId;
-    
+
     // console.log(parcelId, adminId)
 
     const updatedParcel = await ParcelServices.unblockParcel(
@@ -270,6 +270,7 @@ const returnParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const parcelId = req.params.id;
     const returnData: ReturnParcelPayload = req.body;
+
     // console.log(parcelId, returnData)
 
     const updatedParcel = await ParcelServices.returnParcel(
@@ -290,8 +291,9 @@ const returnParcel = catchAsync(
 const cancelParcel = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const { parcelId, updaterId } = req.body;
-    // const returnData: ReturnParcelPayload = req.body
-    console.log(parcelId, updaterId);
+    // const returnData: ReturnParcelPayload = req.body;
+
+    // console.log(parcelId, updaterId);
 
     await ParcelServices.cancelParcel(parcelId, updaterId);
 
