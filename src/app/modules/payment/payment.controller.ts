@@ -59,6 +59,7 @@ const cancelPayment = catchAsync(
     }
   },
 );
+
 const cashOnDeliveryPaymentPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const paymentId = req.body.paymentId;
@@ -73,10 +74,9 @@ const cashOnDeliveryPaymentPayment = catchAsync(
       message: "Payment status updated successfully",
       data: response,
     });
-
-    //    dfg
   },
 );
+
 const validatePayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     console.log("response", req.body);
