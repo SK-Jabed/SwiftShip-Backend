@@ -23,6 +23,7 @@ const initPayment = catchAsync(
     });
   },
 );
+
 const successPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
@@ -89,8 +90,6 @@ const validatePayment = catchAsync(
       message: "Payment Validated successfully",
       data: null,
     });
-
-    //    dfg
   },
 );
 
