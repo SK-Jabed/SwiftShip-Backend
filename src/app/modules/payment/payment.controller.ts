@@ -24,7 +24,6 @@ const initPayment = catchAsync(
   },
 );
 
-
 const successPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
@@ -37,6 +36,7 @@ const successPayment = catchAsync(
     }
   },
 );
+
 const failPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
@@ -49,6 +49,7 @@ const failPayment = catchAsync(
     }
   },
 );
+
 const cancelPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const query = req.query;
