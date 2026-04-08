@@ -63,11 +63,6 @@ const cancelPayment = catchAsync(
   },
 );
 
-
-
-
-
-
 const cashOnDeliveryPaymentPayment = catchAsync(
   async (req: Request, res: Response, next: NextFunction) => {
     const paymentId = req.body.paymentId;

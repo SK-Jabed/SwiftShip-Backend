@@ -19,7 +19,7 @@ const paymentSchema = new Schema<IPayment>(
             required: true,
         },
         paymentGatewayData: {
-            type: Schema.Types.Mixed, // Accepts any shape of object
+            type: Schema.Types.Mixed,
             default: null
         },
         paymentMethod: {
