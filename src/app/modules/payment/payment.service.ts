@@ -94,8 +94,6 @@ const failPayment = async (query: Record<string, string>) => {
 
         // const user = await User.findById(payload.senderId)
 
-
-
         const updatedPayment = await Payment.findOneAndUpdate({ transactionId: query.transactionId }, {
 
             paymentStatus: Payment_Status.FAILED
@@ -106,8 +104,6 @@ const failPayment = async (query: Record<string, string>) => {
             { paymentStatus: Payment_Status.FAILED },
             { new: true, runValidators: true }
         )
-
-
 
         await session.commitTransaction()
         session.endSession()
