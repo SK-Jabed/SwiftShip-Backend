@@ -109,6 +109,7 @@ const failPayment = async (query: Record<string, string>) => {
     throw error;
   }
 };
+
 const cancelPayment = async (query: Record<string, string>) => {
   const session = await Parcel.startSession();
   session.startTransaction();
@@ -141,6 +142,7 @@ const cancelPayment = async (query: Record<string, string>) => {
     throw error;
   }
 };
+
 const cashOnDeliveryPaymentPayment = async (paymentId: string) => {
   const session = await Parcel.startSession();
   session.startTransaction();
